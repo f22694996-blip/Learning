@@ -19,6 +19,8 @@
     --sat:#4C86C6;
     --seeds:#6FA24A;
     --pressplay:#9B7FD4;
+    --wujiamake:#D9A441;
+    --lanceman:#4FA39B;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;background:var(--ink);color:var(--paper);}
@@ -83,7 +85,7 @@
 
 <header>
   <h1>課程</h1>
-  <p>五個平台，一個入口</p>
+  <p>七個平台，一個入口</p>
 </header>
 
 <div class="shelf" id="shelf"></div>
@@ -94,12 +96,16 @@
 </footer>
 
 <script>
+// 要新增或修改平台，改這裡就好，一行一個。
+// id 需對應上面 :root 裡的 --<id> 色票。
 const SITES = [
-  { id:'shifu',     name:'ShiFu 師父', url:'https://shifu.tw/course/mylessons' },
-  { id:'xuemi',     name:'學米',       url:'https://www.xuemi.co' },
-  { id:'sat',       name:'知識衛星',   url:'https://sat.cool' },
-  { id:'seeds',     name:'學籽',       url:'https://seeds.com.tw' },
-  { id:'pressplay', name:'PressPlay',  url:'https://www.pressplay.cc' },
+  { id:'shifu',     name:'ShiFu 師父',   url:'https://shifu.tw/course/mylessons' },
+  { id:'xuemi',     name:'學米',         url:'https://www.xuemi.co' },
+  { id:'sat',       name:'知識衛星',     url:'https://sat.cool' },
+  { id:'seeds',     name:'學籽',         url:'https://seeds.com.tw' },
+  { id:'pressplay', name:'PressPlay',    url:'https://www.pressplay.cc' },
+  { id:'wujiamake', name:'吾家手作',     url:'https://wujiamake.com/my-courses' },
+  { id:'lanceman',  name:'蘭斯曼形象學院', url:'https://lanceman.com.tw/my-account/courses/' },
 ];
 
 const KEY = 'courseHub.notes.v1';
