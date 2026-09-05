@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>課程</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#12181C">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%2312181C'/%3E%3Cg fill='none' stroke='%23E8E4DA' stroke-width='7' stroke-linecap='round'%3E%3Cpath d='M52 48v84'/%3E%3Cpath d='M74 44v88'/%3E%3Cpath d='M96 50v82'/%3E%3C/g%3E%3Cpath d='M118 46l22 6-14 82-22-6z' fill='none' stroke='%23C4783C' stroke-width='7' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#12181C;
+    --paper:#E8E4DA;
+    --dim:#8A9299;
+    --rule:#242D33;
+    --shifu:#C4566A;
+    --xuemi:#D0783C;
+    --sat:#4C86C6;
+    --seeds:#6FA24A;
+    --pressplay:#9B7FD4;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;background:var(--ink);color:var(--paper);}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC","Helvetica Neue",sans-serif;
+    padding:max(28px,env(safe-area-inset-top)) 20px calc(28px + env(safe-area-inset-bottom));
+    max-width:640px;margin:0 auto;
+    min-height:100vh;
+  }
+
+  header{margin-bottom:26px;}
+  h1{
+    font-size:27px;font-weight:700;margin:0 0 5px;
+    letter-spacing:.06em;
+  }
+  header p{margin:0;font-size:12.5px;color:var(--dim);letter-spacing:.02em;}
+
+  .shelf{display:flex;flex-direction:column;gap:9px;}
+
+  a.spine{
+    display:flex;align-items:stretch;gap:14px;
+    text-decoration:none;color:inherit;
+    background:#182025;
+    border:1px solid var(--rule);
+    border-radius:5px;
+    padding:15px 16px 15px 0;
+    transition:background .12s ease;
+  }
+  a.spine:active{background:#1F2A31;}
+  a.spine:focus-visible{outline:2px solid var(--paper);outline-offset:2px;}
+
+  .band{width:4px;border-radius:0 3px 3px 0;flex:none;}
+
+  .body{flex:1;min-width:0;}
+  .name{font-size:16.5px;font-weight:600;letter-spacing:.02em;}
+  .note{
+    font-size:12.5px;color:var(--dim);margin-top:4px;
+    line-height:1.5;
+    white-space:pre-wrap;word-break:break-word;
+  }
+  .note:empty::before{content:"點右側鉛筆寫下上次上到哪";opacity:.42;}
+
+  .pencil{
+    flex:none;align-self:center;
+    width:38px;height:38px;margin-right:2px;
+    display:grid;place-items:center;
+    border:1px solid var(--rule);border-radius:5px;
+    background:none;color:var(--dim);
+    font-size:15px;cursor:pointer;
+  }
+  .pencil:active{color:var(--paper);}
+
+  footer{
+    margin-top:30px;padding-top:16px;
+    border-top:1px solid var(--rule);
+    font-size:11.5px;color:var(--dim);line-height:1.7;
+  }
+  footer b{color:#A8B0B6;font-weight:600;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>課程</h1>
+  <p>五個平台，一個入口</p>
+</header>
+
+<div class="shelf" id="shelf"></div>
+
+<footer>
+  備註存在這支手機的瀏覽器裡，不會上傳，換裝置不會跟著走。<br>
+  加到主畫面：<b>Safari</b> 分享鈕 → 加入主畫面；<b>Chrome</b> 選單 → 加到主畫面。
+</footer>
+
+<script>
+const SITES = [
+  { id:'shifu',     name:'ShiFu 師父', url:'https://shifu.tw/course/mylessons' },
+  { id:'xuemi',     name:'學米',       url:'https://www.xuemi.co' },
+  { id:'sat',       name:'知識衛星',   url:'https://sat.cool' },
+  { id:'seeds',     name:'學籽',       url:'https://seeds.com.tw' },
+  { id:'pressplay', name:'PressPlay',  url:'https://www.pressplay.cc' },
+];
+
+const KEY = 'courseHub.notes.v1';
+
+function loadNotes(){
+  try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+  catch(e){ return {}; }
+}
+function saveNotes(n){
+  try { localStorage.setItem(KEY, JSON.stringify(n)); }
+  catch(e){ /* 無痕模式會擋，忽略即可，連結照樣能用 */ }
+}
+
+const notes = loadNotes();
+const shelf = document.getElementById('shelf');
+
+SITES.forEach(site => {
+  const a = document.createElement('a');
+  a.className = 'spine';
+  a.href = site.url;
+
+  const band = document.createElement('span');
+  band.className = 'band';
+  band.style.background = `var(--${site.id})`;
+
+  const body = document.createElement('span');
+  body.className = 'body';
+
+  const name = document.createElement('span');
+  name.className = 'name';
+  name.textContent = site.name;
+
+  const note = document.createElement('span');
+  note.className = 'note';
+  note.textContent = notes[site.id] || '';
+
+  body.append(name, note);
+
+  const pencil = document.createElement('button');
+  pencil.className = 'pencil';
+  pencil.type = 'button';
+  pencil.textContent = '✎';
+  pencil.setAttribute('aria-label', site.name + ' 的備註');
+  pencil.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const now = notes[site.id] || '';
+    const next = prompt(site.name + ' — 上次上到哪？', now);
+    if (next === null) return;
+    const v = next.trim();
+    if (v) notes[site.id] = v; else delete notes[site.id];
+    saveNotes(notes);
+    note.textContent = v;
+  });
+
+  a.append(band, body, pencil);
+  shelf.appendChild(a);
+});
+</script>
+
+</body>
+</html>
