@@ -21,6 +21,7 @@
     --pressplay:#9B7FD4;
     --wujiamake:#D9A441;
     --lanceman:#4FA39B;
+    --starart:#C9A227;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;background:var(--ink);color:var(--paper);}
@@ -55,9 +56,9 @@
   .band{width:4px;border-radius:0 3px 3px 0;flex:none;}
 
   .body{flex:1;min-width:0;}
-  .name{font-size:16.5px;font-weight:600;letter-spacing:.02em;}
+  .name{display:block;font-size:16.5px;font-weight:600;letter-spacing:.02em;}
   .note{
-    font-size:12.5px;color:var(--dim);margin-top:4px;
+    display:block;font-size:12.5px;color:var(--dim);margin-top:4px;
     line-height:1.5;
     white-space:pre-wrap;word-break:break-word;
   }
@@ -79,19 +80,226 @@
     font-size:11.5px;color:var(--dim);line-height:1.7;
   }
   footer b{color:#A8B0B6;font-weight:600;}
+
+  /* ---- 分頁 ---- */
+  .tabs{display:flex;margin:-8px 0 22px;border-bottom:1px solid var(--rule);}
+  .tabs button{
+    flex:none;background:none;border:0;color:var(--dim);
+    font:inherit;font-size:14.5px;font-weight:600;letter-spacing:.04em;
+    padding:8px 4px 10px;margin-right:18px;cursor:pointer;
+    border-bottom:2px solid transparent;margin-bottom:-1px;
+  }
+  .tabs button[aria-selected="true"]{color:var(--paper);border-bottom-color:var(--paper);}
+  [hidden]{display:none !important;}
+
+  .sec{font-size:12px;color:var(--dim);letter-spacing:.08em;margin:0 0 10px;font-weight:600;}
+  .btn{
+    background:none;border:1px solid var(--rule);border-radius:5px;color:var(--paper);
+    font:inherit;font-size:13px;padding:7px 11px;cursor:pointer;text-decoration:none;
+    display:inline-flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;
+  }
+  .btn:active{background:#1F2A31;}
+  .btn.pri{border-color:#3A474F;background:#212C33;}
+  .btn.sm{padding:5px 9px;font-size:12.5px;}
+  .btn:disabled{opacity:.35;}
+
+  /* ---- 今天 ---- */
+  .today{
+    background:#182025;border:1px solid var(--rule);border-radius:5px;
+    padding:14px 16px;margin-bottom:22px;
+  }
+  .today h2{font-size:15px;margin:0 0 10px;font-weight:700;letter-spacing:.03em;}
+  .today .empty{font-size:13px;color:var(--dim);line-height:1.6;}
+  .trow{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--rule);}
+  .trow:first-of-type{border-top:0;padding-top:0;}
+  .trow .tm{font-size:12px;color:var(--dim);width:44px;flex:none;line-height:1.35;}
+  .trow .t{flex:1;min-width:0;font-size:14px;border-left:3px solid;padding-left:9px;}
+  .trow .t small{display:block;color:var(--dim);font-size:12px;margin-top:2px;}
+  .trow.done .t{opacity:.55;}
+
+  /* ---- 週課表 ---- */
+  .wkbar{display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+  .wkbar .rng{flex:1;text-align:center;font-size:14.5px;font-weight:600;letter-spacing:.03em;}
+  .wk{display:grid;grid-template-columns:40px repeat(7,minmax(0,1fr));gap:3px;}
+  .wk .hd{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;color:var(--dim);padding:2px 0 6px;}
+  .wk .hd b{display:block;width:26px;height:26px;line-height:26px;text-align:center;border-radius:50%;font-size:14px;color:var(--paper);font-weight:600;}
+  .wk .hd.now{color:var(--paper);}
+  .wk .hd.now b{background:var(--paper);color:var(--ink);}
+  .wk .rl{font-size:11px;white-space:nowrap;color:var(--dim);display:flex;flex-direction:column;justify-content:center;align-items:center;line-height:1.3;text-align:center;}
+  .cell{
+    min-height:74px;border-radius:4px;background:#161D22;border:1px solid var(--rule);
+    padding:5px 4px;font:inherit;color:var(--paper);text-align:left;cursor:pointer;
+    display:flex;flex-direction:column;gap:3px;overflow:hidden;position:relative;
+  }
+  .cell.na{background:none;border:0;cursor:default;}
+  .cell.past{opacity:.45;}
+  .cell.is-today{border-color:#56646E;}
+  .cell .cn{font-size:11.5px;font-weight:600;line-height:1.3;word-break:break-all;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+  .cell .pf{font-size:10px;color:var(--dim);line-height:1.2;}
+  .cell.has{border-left-width:3px;}
+  .cell .ck{position:absolute;right:4px;bottom:3px;font-size:11px;color:#7FB069;}
+  .cell .ov{position:absolute;right:4px;top:3px;width:5px;height:5px;border-radius:50%;background:var(--dim);}
+  .cell.free .plus{margin:auto;color:#3A474F;font-size:16px;}
+  .legend{font-size:11.5px;color:var(--dim);margin-top:10px;line-height:1.6;}
+  .wktools{display:flex;gap:8px;margin-top:14px;}
+  .wktools .btn{flex:1;font-size:12.5px;}
+
+  /* ---- 課程清單 ---- */
+  .card{
+    background:#182025;border:1px solid var(--rule);border-radius:5px;
+    display:flex;gap:14px;padding:14px 14px 14px 0;
+  }
+  .card .bd{flex:1;min-width:0;}
+  .card .top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .card .cn{font-size:16px;font-weight:600;letter-spacing:.02em;}
+  .card .pf{font-size:12px;color:var(--dim);}
+  .tag{font-size:11px;padding:1px 7px;border-radius:9px;border:1px solid currentColor;margin-left:auto;white-space:nowrap;}
+  .tag.ok{color:#7FB069;} .tag.late{color:#E07A5F;} .tag.over{color:#E05F5F;} .tag.fin,.tag.free{color:var(--dim);}
+  .bar{height:5px;background:#0E1316;border-radius:3px;margin:10px 0 7px;overflow:hidden;}
+  .bar i{display:block;height:100%;border-radius:3px;}
+  .meta{font-size:12.5px;color:var(--dim);line-height:1.6;}
+  .acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+  .plist{display:flex;flex-direction:column;gap:9px;}
+  .add{width:100%;margin-top:10px;padding:12px;border-style:dashed;color:var(--dim);}
+  .tools{display:flex;gap:8px;margin-top:22px;}
+  .tools .btn{flex:1;color:var(--dim);font-size:12.5px;}
+
+  /* ---- 對話框 ---- */
+  dialog{
+    background:#182025;color:var(--paper);border:1px solid var(--rule);border-radius:8px;
+    width:min(520px,calc(100vw - 24px));padding:20px 18px;
+  }
+  dialog::backdrop{background:rgba(0,0,0,.6);}
+  dialog h3{margin:0 0 4px;font-size:17px;letter-spacing:.03em;}
+  dialog .subt{font-size:12.5px;color:var(--dim);margin:0 0 16px;}
+  .f{margin-bottom:14px;}
+  .f label.lb{display:block;font-size:12px;color:var(--dim);margin-bottom:6px;letter-spacing:.04em;}
+  .f input:not([type=radio]),.f select{
+    width:100%;background:#0E1316;color:var(--paper);border:1px solid var(--rule);border-radius:5px;
+    font:inherit;font-size:16px;padding:9px 10px;
+  }
+  .f textarea{width:100%;background:#0E1316;color:var(--paper);border:1px solid var(--rule);border-radius:5px;font:inherit;font-size:16px;padding:9px 10px;resize:vertical;}
+  .f2{display:flex;gap:10px;} .f2 .f{flex:1;}
+  .seg{display:flex;gap:6px;}
+  .seg label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+    background:#0E1316;border:1px solid var(--rule);border-radius:5px;padding:9px 0;font-size:13.5px;cursor:pointer;color:var(--dim);}
+  .seg input{accent-color:var(--paper);margin:0;}
+  .seg label:has(input:checked){color:var(--paper);border-color:#4A5862;background:#2E3A42;}
+  .hint{font-size:11.5px;color:var(--dim);margin-top:6px;line-height:1.5;}
+  .dlg-acts{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap;}
+  .dlg-acts .del{margin-right:auto;color:#E07A5F;}
+  .slotinfo{background:#0E1316;border:1px solid var(--rule);border-radius:5px;padding:10px 12px;margin-bottom:14px;font-size:13px;line-height:1.6;}
+  .slotinfo b{font-size:14.5px;}
+  .slotinfo .row{display:flex;gap:6px;margin-top:8px;}
+  .items{margin-top:12px;border-top:1px solid var(--rule);}
+  .it{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--rule);}
+  .it input{width:18px;height:18px;flex:none;accent-color:#7FB069;margin:0;}
+  .it .itx{flex:1;min-width:0;font-size:13.5px;line-height:1.4;}
+  .it .itx small{display:block;color:var(--dim);font-size:11.5px;margin-top:2px;}
+  .it.done .itx{opacity:.5;}
 </style>
 </head>
 <body>
 
 <header>
   <h1>課程</h1>
-  <p>七個平台，一個入口</p>
+  <p>八個平台，一個入口</p>
 </header>
 
-<div class="shelf" id="shelf"></div>
+<nav class="tabs" role="tablist">
+  <button type="button" role="tab" data-tab="hub" aria-selected="true">入口</button>
+  <button type="button" role="tab" data-tab="sched" aria-selected="false">課表</button>
+  <button type="button" role="tab" data-tab="courses" aria-selected="false">課程進度</button>
+</nav>
+
+<section id="tab-hub">
+  <div class="shelf" id="shelf"></div>
+</section>
+
+<section id="tab-sched" hidden>
+  <div class="today" id="today"></div>
+  <div class="wkbar">
+    <button type="button" class="btn sm" id="prevWk" aria-label="上一週">‹</button>
+    <div class="rng" id="wkRange"></div>
+    <button type="button" class="btn sm" id="nextWk" aria-label="下一週">›</button>
+    <button type="button" class="btn sm" id="thisWk">本週</button>
+  </div>
+  <div class="wk" id="wk"></div>
+  <div class="legend">點格子安排或更換課程。右上角小點＝這週臨時調整過；✓＝那堂有完成單元。</div>
+  <div class="wktools">
+    <button type="button" class="btn" id="autoBtn">依進度自動排每週課表</button>
+  </div>
+</section>
+
+<section id="tab-courses" hidden>
+  <div class="plist" id="plist"></div>
+  <button type="button" class="btn add" id="addBtn">＋ 新增課程</button>
+  <div class="tools">
+    <button type="button" class="btn" id="exportBtn">備份資料</button>
+    <button type="button" class="btn" id="importBtn">還原備份</button>
+    <input type="file" id="importFile" accept="application/json,.json" hidden>
+  </div>
+</section>
+
+<!-- 通用：輸入／確認／提示（取代瀏覽器的 prompt/confirm/alert，有些環境會擋） -->
+<dialog id="ui">
+  <form method="dialog" id="uiForm">
+    <h3 id="uiTitle"></h3>
+    <p class="subt" id="uiMsg"></p>
+    <div class="f" id="uiField"><textarea id="uiInput" rows="3"></textarea></div>
+    <div class="dlg-acts">
+      <span style="margin-right:auto"></span>
+      <button type="button" class="btn" id="uiCancel">取消</button>
+      <button type="submit" class="btn pri" id="uiOk">確定</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- 課程編輯 -->
+<dialog id="dlg">
+  <form method="dialog" id="form">
+    <h3 id="dlgTitle">新增課程</h3>
+    <p class="subt" id="dlgSub">新增後到「課表」把它排進時段。</p>
+    <div class="f"><label class="lb" for="fName">課程名稱</label><input id="fName" maxlength="60" placeholder="例：Python 機器學習私塾"></div>
+    <div class="f" id="fSiteBox"><label class="lb" for="fSite">平台</label><select id="fSite"></select></div>
+    <div class="f2" id="fNumBox">
+      <div class="f"><label class="lb" for="fTotal">總單元數</label><input id="fTotal" type="number" inputmode="numeric" min="1"></div>
+      <div class="f"><label class="lb" for="fDone">已完成</label><input id="fDone" type="number" inputmode="numeric" min="0" value="0"></div>
+    </div>
+    <div class="f"><label class="lb" for="fDue">目標完成日（可不填）</label><input id="fDue" type="date">
+      <div class="hint">有填就會依課表上排到的堂數，算出每堂要上多少；進度落後會標紅。</div></div>
+    <div class="dlg-acts">
+      <button type="button" class="btn del" id="delBtn">刪除</button>
+      <button type="button" class="btn" id="cancelBtn">取消</button>
+      <button type="submit" class="btn pri">儲存</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- 時段 -->
+<dialog id="sdlg">
+  <form method="dialog" id="sform">
+    <h3 id="sTitle"></h3>
+    <p class="subt" id="sSub"></p>
+    <div id="sInfo"></div>
+    <div class="f"><label class="lb" for="sCourse">這個時段上</label><select id="sCourse"></select></div>
+    <div class="f">
+      <div class="seg">
+        <label><input type="radio" name="sScope" value="weekly" checked> 每週固定</label>
+        <label><input type="radio" name="sScope" value="once"> 只改這一次</label>
+      </div>
+      <div class="hint" id="sHint"></div>
+    </div>
+    <div class="dlg-acts">
+      <button type="button" class="btn" id="sCancel">取消</button>
+      <button type="submit" class="btn pri">儲存</button>
+    </div>
+  </form>
+</dialog>
 
 <footer>
-  備註存在這支手機的瀏覽器裡，不會上傳，換裝置不會跟著走。<br>
+  備註、課表和進度都存在這支手機的瀏覽器裡，不會上傳，換裝置不會跟著走；要搬家或怕被清掉，用「課程進度」頁下方的備份／還原。<br>
   加到主畫面：<b>Safari</b> 分享鈕 → 加入主畫面；<b>Chrome</b> 選單 → 加到主畫面。
 </footer>
 
@@ -100,13 +308,46 @@
 // id 需對應上面 :root 裡的 --<id> 色票。
 const SITES = [
   { id:'shifu',     name:'ShiFu 師父',   url:'https://shifu.tw/course/mylessons' },
-  { id:'xuemi',     name:'學米',         url:'https://www.xuemi.co' },
+  { id:'xuemi',     name:'學米',         url:'https://www.xuemi.co/members/e18c70ad-a8fd-4eac-8471-e8a1efa4d857?tabkey=private-tech' },
   { id:'sat',       name:'知識衛星',     url:'https://sat.cool' },
-  { id:'seeds',     name:'學籽',         url:'https://seeds.com.tw' },
-  { id:'pressplay', name:'PressPlay',    url:'https://www.pressplay.cc' },
+  { id:'seeds',     name:'學籽',         url:'https://seeds.com.tw/my-courses' },
+  { id:'pressplay', name:'PressPlay',    url:'https://www.pressplay.cc/member/learning/projects' },
   { id:'wujiamake', name:'吾家手作',     url:'https://wujiamake.com/my-courses' },
   { id:'lanceman',  name:'蘭斯曼形象學院', url:'https://lanceman.com.tw/my-account/courses/' },
+  { id:'starart',   name:'星彧國際',     url:'https://star-art.com.tw/online-courses/' },
 ];
+
+
+// ================= 通用對話框 =================
+// mode: 'prompt' 回傳字串或 null；'confirm' 回傳 true/false；'alert' 回傳 true
+function uiDialog(mode, title, msg, value){
+  const d = document.getElementById('ui');
+  const inp = document.getElementById('uiInput');
+  document.getElementById('uiTitle').textContent = title;
+  const m = document.getElementById('uiMsg'); m.textContent = msg || ''; m.hidden = !msg;
+  document.getElementById('uiField').hidden = mode !== 'prompt';
+  document.getElementById('uiCancel').hidden = mode === 'alert';
+  inp.value = value || '';
+  return new Promise(resolve => {
+    let result = mode === 'prompt' ? null : false;
+    const ok = e => { e.preventDefault(); result = mode === 'prompt' ? inp.value : true; d.close(); };
+    const cancel = () => d.close();
+    const form = document.getElementById('uiForm');
+    const btn = document.getElementById('uiCancel');
+    form.addEventListener('submit', ok);
+    btn.addEventListener('click', cancel);
+    d.addEventListener('close', function done(){
+      form.removeEventListener('submit', ok); btn.removeEventListener('click', cancel);
+      d.removeEventListener('close', done);
+      resolve(result);
+    });
+    d.showModal();
+    if (mode === 'prompt'){ inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+  });
+}
+const uiPrompt  = (t, m, v) => uiDialog('prompt', t, m, v);
+const uiConfirm = m => uiDialog('confirm', '確認', m);
+const uiAlert   = m => uiDialog('alert', '提醒', m);
 
 const KEY = 'courseHub.notes.v1';
 
@@ -149,11 +390,11 @@ SITES.forEach(site => {
   pencil.type = 'button';
   pencil.textContent = '✎';
   pencil.setAttribute('aria-label', site.name + ' 的備註');
-  pencil.addEventListener('click', e => {
+  pencil.addEventListener('click', async e => {
     e.preventDefault();
     e.stopPropagation();
     const now = notes[site.id] || '';
-    const next = prompt(site.name + ' — 上次上到哪？', now);
+    const next = await uiPrompt(site.name, '上次上到哪？', now);
     if (next === null) return;
     const v = next.trim();
     if (v) notes[site.id] = v; else delete notes[site.id];
@@ -164,6 +405,610 @@ SITES.forEach(site => {
   a.append(band, body, pencil);
   shelf.appendChild(a);
 });
+// ================= 時段設定 =================
+// 要改上課時間改這裡。row 0/1/2 = 上午/下午/晚上；min = 這堂有幾分鐘可以上課。
+const ROWS = [
+  { name:'上午', start:'09:00', end:'12:00', min:180 },
+  { name:'下午', start:'14:00', end:'17:00', min:180 },
+  { name:'晚上', start:'19:00', end:'21:00', min:120 },
+];
+// 每個星期幾開放哪些時段（0=日 … 6=六）
+const AVAIL = { 0:[0,1,2], 1:[2], 2:[2], 3:[2], 4:[2], 5:[2], 6:[0,1,2] };
+// 自動排課時填格子的順序（週一 → 週日）
+const SLOT_ORDER = ['1-2','2-2','3-2','4-2','5-2','6-0','6-1','6-2','0-0','0-1','0-2'];
+// 手動新增的課沒有時長，自動排課時每單元先估 30 分鐘
+const MIN_PER_UNIT = 30;
+
+// ================= 從平台同步來的課程資料 =================
+// 由 Claude 在你登入的瀏覽器讀取平台後寫入。要更新：在 Chrome 側邊欄請 Claude「同步學米」。
+// 每個 item = 平台上的一個單元：l 堂數、d 已完成堂數、m 總分鐘、r 剩餘分鐘、n 下一堂標題
+const SEED = /*SEED*/{"v":"2026-11-17i","site":"xuemi","tracks":[{"id":"xm-private","name":"學米私塾課","note":"學米標示 2028-02-25 到期（傳統機器學習一～三未標日期，一併以此計）","items":[{"id":"55693f85-93d5-409e-9270-b32cf435bbd6","t":"傳統機器學習(二)","l":5,"d":0,"m":251,"r":247,"n":"數據分析方法"},{"id":"c0095903-fdd8-4880-b6fc-bbbaaf4bf951","t":"傳統機器學習(一)","l":5,"d":2,"m":396,"r":305,"n":"資料處理工程"},{"id":"6a9c003e-9bad-4510-9734-7f4a39906d22","t":"傳統機器學習(三)","l":5,"d":0,"m":291,"r":291,"n":"聚類分析與關聯演算法"},{"id":"0510e06f-172c-474e-a49a-e73d5ed1a6fe","t":"機器學習重要套件 Pytorch, Keras","l":4,"d":0,"m":132,"r":132,"n":"Pytorch (上)"},{"id":"0a176a48-1789-4158-bc93-64c517682be3","t":"使用常用的Python套件","l":8,"d":0,"m":101,"r":101,"n":"模組的引入與使用"},{"id":"0bdabb4b-d2f8-4b04-9315-f28d809bd15a","t":"裝飾器的概念與使用","l":6,"d":0,"m":87,"r":87,"n":"閉包的概念和作用"},{"id":"1b0b7eaa-9535-4876-8616-b3d9f83d8eae","t":"來自購物車的智慧（上）","l":11,"d":0,"m":130,"r":130,"n":"關聯法則的重要"},{"id":"1ca3d264-5347-420d-b3e5-e03b03f25e22","t":"錯誤與例外處理方式","l":12,"d":0,"m":134,"r":134,"n":"錯誤與例外的介紹"},{"id":"228bada6-8911-4ada-8340-f8558ed47bf0","t":"來自購物車的智慧（下）","l":13,"d":0,"m":157,"r":157,"n":"先檢驗銷售訂單的基本訊息"},{"id":"4418afe3-ce89-4d10-b26b-107479c688b5","t":"資料是新時代的石油","l":23,"d":0,"m":243,"r":243,"n":"為什麼說資料是新時代的石油"},{"id":"45d9d87f-7543-4c36-8afa-74a1fa2306c0","t":"「迴歸」本質（上）","l":10,"d":0,"m":150,"r":150,"n":"為什麼說regression 是回歸"},{"id":"49342da3-6eda-49c0-a39c-69f14b3f82ec","t":"資料視覺化重要套件 Matplot, Seaborn","l":2,"d":0,"m":36,"r":36,"n":"Matplotlib"},{"id":"4c897fd3-7410-476f-b477-6491e2269179","t":"撰寫函式與實際使用","l":4,"d":0,"m":42,"r":42,"n":"函式介紹"},{"id":"4ceff5b6-53f6-4149-be8d-224f3c7ae42b","t":"吃果子拜樹頭 - 樹狀演算法（上）","l":11,"d":0,"m":152,"r":152,"n":"樹的基本概念"},{"id":"50fc9e66-3cc7-4da0-bf53-5ccde66649bd","t":"Python 條件判斷與實際應用","l":4,"d":0,"m":31,"r":31,"n":"Python學習懶人包"},{"id":"595d9f40-96e9-4ad7-803a-6de59bf8bc98","t":"迴歸實戰範例（下）","l":9,"d":0,"m":122,"r":122,"n":"降維的思路和 PCA"},{"id":"5ea35006-4c25-40af-9ba8-d5b5033a0724","t":"函式編程概念與技巧","l":5,"d":0,"m":45,"r":45,"n":"FP 介紹"},{"id":"67026ab1-d7e2-4148-bc85-5f490090ec9b","t":"時間序列（上）","l":14,"d":0,"m":161,"r":161,"n":"時間序列和迴歸有什麼不同"},{"id":"770e16cd-5c0d-4422-ab1d-347fe8e11a4d","t":"物以類聚（下）","l":12,"d":0,"m":145,"r":145,"n":"Decision Boundary 是怎麼做出來的"},{"id":"788b85ca-914e-45a6-b8c2-c606adb311c3","t":"「迴歸」本質（下）","l":10,"d":0,"m":155,"r":155,"n":"多變數迴歸實作1"},{"id":"8b79f1bd-d722-4ea2-b815-cf0fddaea0b6","t":"物以類聚（上）","l":13,"d":0,"m":150,"r":150,"n":"非監督式學習和集群分析1"},{"id":"8d6e9c07-87c7-4b34-99c7-2616d9bcc605","t":"迴歸實戰範例（上）","l":9,"d":0,"m":138,"r":138,"n":"案例一：客戶貢獻度背景介紹"},{"id":"8f7d66df-6353-4f09-81b2-0e6638e83bee","t":"資料結構的實戰演練","l":5,"d":5,"m":53,"r":0,"n":""},{"id":"9106dfc3-263f-4b45-b487-692487f05472","t":"新手村｜系統操作講解","l":3,"d":0,"m":6,"r":6,"n":"影片觀看地方"},{"id":"910d4759-14ef-4667-8d7f-597d449802d1","t":"Python 迴圈撰寫與實際應用","l":5,"d":0,"m":55,"r":55,"n":"迴圈簡介"},{"id":"923f587e-8f31-4066-a443-1450f519c030","t":"生成器的概念與使用","l":4,"d":0,"m":52,"r":52,"n":"迭代器的概念"},{"id":"a21a92b7-652e-4b85-a578-f258ffc35fb4","t":"吃果子拜樹頭 - 樹狀演算法（下）","l":10,"d":0,"m":124,"r":124,"n":"迴歸樹和 Regularization"},{"id":"a80ee7d3-5cd7-4538-bc6b-b235cb41c05e","t":"機器學習綜合演練（上）","l":11,"d":0,"m":132,"r":132,"n":"更改疫情資料的說明"},{"id":"b229f7a9-93e9-403a-8c1d-f2d477950188","t":"專案實作：銷售行為分析","l":10,"d":0,"m":120,"r":120,"n":"專案介紹"},{"id":"b816dd45-d03b-4f9c-b7d9-ff84ae934baf","t":"套件安裝與模組管理","l":8,"d":0,"m":88,"r":88,"n":"命令列指令與應用"},{"id":"b8ebf5ef-642c-479b-b756-36ec362860ba","t":"時間序列（下）","l":12,"d":0,"m":129,"r":129,"n":"ADF-Test 和 Lag"},{"id":"cce8fe9d-1205-473e-b385-ad36baa7abb2","t":"專案實作：PTT爬蟲","l":9,"d":0,"m":70,"r":70,"n":"專案目標和發送 PTT 頁面請求"},{"id":"d617002f-6ff1-42f5-8934-a098885bba81","t":"統計重要套件 Numpy, Pandas","l":5,"d":0,"m":108,"r":108,"n":"numpy 概念&初始化"},{"id":"de5eb90b-12a3-4aaa-bc49-e015affa1790","t":"機器學習綜合演練（下）","l":10,"d":0,"m":137,"r":137,"n":"合併兩個欄位來分析生存率"},{"id":"e2518070-1b54-4756-b9e8-03161bf5dc7f","t":"分類專案實作","l":11,"d":0,"m":131,"r":131,"n":"紅酒資料熱身"},{"id":"e89c90ed-40e6-4c51-b16b-770d4300412c","t":"網路爬蟲原理與實戰","l":6,"d":0,"m":78,"r":78,"n":"網路爬蟲"},{"id":"ea9ae0b2-259b-47b3-ac2a-67d9d361a586","t":"遞迴概念與實戰演練","l":2,"d":0,"m":20,"r":20,"n":"遞迴概念"},{"id":"f4a9a457-a84a-432b-aa5a-60d8df2c6808","t":"檔案處理","l":6,"d":0,"m":53,"r":53,"n":"檔案開啟與路徑"},{"id":"fa25b2ff-cd3d-4843-b06a-4a85bc60e125","t":"手寫辨識MNIST實作","l":11,"d":0,"m":148,"r":148,"n":"手寫數字辨識：MNIST 背景簡介"}],"due":"2028-02-25","site":"xuemi"},{"id":"xm-path","name":"學米課程預排","note":"人工智慧實務＋軟體開發（從零到一看機器學習 兩組共用）","items":[{"id":"8f149484-a907-4e3b-a448-5c789a49148e","t":"程式語言與開發環境","l":6,"d":6,"m":58,"r":0,"n":""},{"id":"8c4bc0cc-bbc8-46ff-b115-55b24c55fb82","t":"基本程式邏輯與概念","l":8,"d":8,"m":69,"r":0,"n":""},{"id":"5866aaaf-afce-4958-aca6-9d549850baed","t":"物件導向的概念與實作","l":5,"d":0,"m":66,"r":66,"n":"物件導向的概念"},{"id":"7362c369-8e98-45b2-bd1d-8f89b619b981","t":"從零到一看機器學習","l":10,"d":4,"m":131,"r":37,"n":"人工智慧與機器學習是什麼（三）"},{"id":"6b3b4ecd-9ee3-451d-a39c-e20df4791f36","t":"Google Colab 實戰操作","l":6,"d":0,"m":65,"r":65,"n":"Google Colab 實戰操作（一）"},{"id":"c979e1ff-2354-4826-b9f3-4749e373f409","t":"監督式學習的主角：分類 Classification","l":15,"d":0,"m":196,"r":196,"n":"分類的基礎概念"},{"id":"21beccda-4600-48ac-ad96-547485316016","t":"深度學習簡介","l":8,"d":0,"m":86,"r":86,"n":"神經網路和深度學習概述（一）"}],"site":"xuemi"},{"id":"xm-talks","name":"學米講座（百寶袋）","note":"講座、小聚錄影","items":[{"id":"0159d982-65f6-450f-b66c-6fe0c2ad2d2d","t":"打造獨一無二風格字入門篇","l":1,"d":0,"m":128,"r":115,"n":""},{"id":"f735de4e-823a-451a-ad94-bb7769428e7f","t":"【Mak / 小麥】包裝設計接案的實戰力","l":1,"d":0,"m":91,"r":91,"n":""},{"id":"2fd80bd4-622d-4948-9220-c4bfb75618a2","t":"【亨利溫】上班族斜槓年收 300 萬的秘訣","l":1,"d":0,"m":69,"r":59,"n":""},{"id":"111552af-f412-421d-9a36-fc7e851612ea","t":"【芊筆芯】日系插畫工作坊：Procreate 光影","l":1,"d":0,"m":93,"r":93,"n":""},{"id":"b052a19a-1178-4d18-a266-6746ac62fab0","t":"【講座】百萬 MV 導演的剪接軟體指南","l":1,"d":0,"m":69,"r":69,"n":""},{"id":"2cccd7b6-33dc-4d54-8fba-39aa40214303","t":"【講座】成功跨足數據領域的心態轉變","l":1,"d":0,"m":55,"r":55,"n":""},{"id":"c5e0adb4-4d05-447f-a492-38769e2aa85e","t":"【講座】當代資料工程師的學習地圖","l":1,"d":0,"m":72,"r":72,"n":""},{"id":"a482ede9-1485-4c18-a9d4-9a4cb20c0ff5","t":"【小聚】危機就是轉機：危機處理能力","l":1,"d":0,"m":54,"r":54,"n":""},{"id":"f6e0fa7f-389c-4eba-990a-5c3a29ebfb18","t":"【講座】邁向自由接案之路","l":1,"d":0,"m":83,"r":83,"n":""},{"id":"29e9219d-7223-4787-8d01-6416f8dabdbd","t":"【講座】轉職先修班 X 前後端工程完全解密","l":1,"d":0,"m":93,"r":93,"n":""},{"id":"814276f6-66da-4db5-af3e-cfdbd57be58b","t":"【小聚】邁向元宇宙，前進 3D 科幻世界","l":1,"d":0,"m":67,"r":67,"n":""},{"id":"df19e837-8065-4c2b-a4d8-a453bbfa7e44","t":"【小聚】啟發新一代 UI/UX 設計師","l":1,"d":0,"m":65,"r":65,"n":""},{"id":"06907819-32cb-4fd0-8096-8195bab9f9a2","t":"【講座】窺探未來世界！AI 工程師大解密","l":1,"d":0,"m":80,"r":80,"n":""},{"id":"019fa27a-f49d-4345-9e14-a79d91e2f433","t":"【講座】技能等級 99+ 的 UI 設計師","l":1,"d":0,"m":79,"r":79,"n":""},{"id":"c0e55ee2-46a1-4e3b-abdb-500ec93e8886","t":"【講座】打開未知電繪世界的鑰匙","l":1,"d":0,"m":56,"r":56,"n":""},{"id":"58434490-65bf-43e9-ba33-307d080b2c35","t":"【講座】90 分鐘跨出醫療 AI 的第一步","l":1,"d":0,"m":89,"r":89,"n":""},{"id":"d170e5f0-59f3-4590-a17b-5d5db3cb5850","t":"【講座】如何寫出一條工程康莊大道","l":1,"d":0,"m":122,"r":122,"n":""},{"id":"a15230ae-d4ed-420e-be67-3405937d42aa","t":"【講座】降低廣告花費的兩大心法","l":1,"d":0,"m":50,"r":50,"n":""},{"id":"8b2c2b5d-1306-4d15-a05f-0d248c1167b1","t":"【講座】薪水翻倍的接案人生","l":1,"d":0,"m":100,"r":100,"n":""},{"id":"fd3241b8-6b6a-43ca-a341-2b1d763e8437","t":"【講座】資料科學的職涯地圖","l":1,"d":0,"m":87,"r":87,"n":""},{"id":"f733fc08-1d72-489b-91ab-f09c628941f5","t":"【講座】大師對談：品牌 x 廣告 x 設計","l":1,"d":0,"m":152,"r":152,"n":""},{"id":"ff7fefd1-a089-4037-8e9e-e52bfd9b9264","t":"【講座】UIUX 職場力：你不知道的那些事","l":1,"d":0,"m":62,"r":62,"n":""},{"id":"984492c3-ad20-458f-a58c-e79befb64613","t":"【講座】打造人生工具箱！帶著走","l":1,"d":0,"m":90,"r":90,"n":""},{"id":"053a4fcd-836f-4bcc-969e-c3dc3b1c02ed","t":"【講座】Webflow：網頁設計師也可以不寫 code","l":1,"d":0,"m":99,"r":99,"n":""},{"id":"a1221fbb-a6d5-4510-b4de-f8650424c51c","t":"【講座】個人 IP 煉成陣：建立專屬虛擬角色","l":1,"d":0,"m":84,"r":84,"n":""},{"id":"75806535-3bf3-4466-87f7-8e1cc624c551","t":"自媒體年收百萬攻略：23 歲賺進第一桶金","l":2,"d":0,"m":118,"r":118,"n":""},{"id":"9c901797-cf78-4b7e-b40f-f68132e21dd0","t":"米米學說：2024.08.01 商用設計","l":1,"d":0,"m":96,"r":96,"n":""}],"site":"xuemi"},{"id":"sa-nlp","name":"NLP腦力開發","site":"starart","url":"https://star-art.com.tw/online-courses/super-memory","manual":true,"note":"星彧國際・小巨老師（現場最新版）63 支影片；平台不記進度，上完請在這裡勾","items":[{"id":"sa-01","t":"01.前言-這門課程成功關鍵","l":1,"d":0,"m":36,"r":36,"n":""},{"id":"sa-02","t":"02.課程地圖","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sa-03","t":"03.移行換位法-1","l":1,"d":0,"m":19,"r":19,"n":""},{"id":"sa-04","t":"04.移行換位法-2","l":1,"d":0,"m":35,"r":35,"n":""},{"id":"sa-05","t":"05.勾魂鎖鏈法-1","l":1,"d":0,"m":35,"r":35,"n":""},{"id":"sa-06","t":"06.勾魂鎖鏈法-2","l":1,"d":0,"m":18,"r":18,"n":""},{"id":"sa-07","t":"07.病毒蔓延法","l":1,"d":0,"m":33,"r":33,"n":""},{"id":"sa-08","t":"08.病毒蔓延法2","l":1,"d":0,"m":34,"r":34,"n":""},{"id":"sa-09","t":"09.病毒蔓延法3","l":1,"d":0,"m":34,"r":34,"n":""},{"id":"sa-10","t":"10.病毒蔓延法(進階應用)-1","l":1,"d":0,"m":20,"r":20,"n":""},{"id":"sa-11","t":"11.病毒蔓延法(進階應用)-2","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sa-12","t":"12.櫻花路徑法1","l":1,"d":0,"m":25,"r":25,"n":""},{"id":"sa-13","t":"13.櫻花路徑法2","l":1,"d":0,"m":27,"r":27,"n":""},{"id":"sa-14","t":"14.櫻花路徑法3","l":1,"d":0,"m":33,"r":33,"n":""},{"id":"sa-15","t":"15.心智圖-1","l":1,"d":0,"m":31,"r":31,"n":""},{"id":"sa-16","t":"16.心智圖-2","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"sa-17","t":"17.心智圖-3","l":1,"d":0,"m":28,"r":28,"n":""},{"id":"sa-18","t":"18.心智圖-4","l":1,"d":0,"m":37,"r":37,"n":""},{"id":"sa-19","t":"19.心智圖-5","l":1,"d":0,"m":28,"r":28,"n":""},{"id":"sa-20","t":"20.心智圖-6","l":1,"d":0,"m":31,"r":31,"n":""},{"id":"sa-21","t":"21.心智圖-7","l":1,"d":0,"m":33,"r":33,"n":""},{"id":"sa-22","t":"22.心智圖-8","l":1,"d":0,"m":55,"r":55,"n":""},{"id":"sa-23","t":"23.英文記憶-1","l":1,"d":0,"m":33,"r":33,"n":""},{"id":"sa-24","t":"24.英文記憶-2","l":1,"d":0,"m":30,"r":30,"n":""},{"id":"sa-25","t":"25.英文記憶-3","l":1,"d":0,"m":22,"r":22,"n":""},{"id":"sa-26","t":"26.速讀-1","l":1,"d":0,"m":37,"r":37,"n":""},{"id":"sa-27","t":"27.速讀-2","l":1,"d":0,"m":32,"r":32,"n":""},{"id":"sa-28","t":"28.速讀-3","l":1,"d":0,"m":36,"r":36,"n":""},{"id":"sa-29","t":"29.速讀-4","l":1,"d":0,"m":22,"r":22,"n":""},{"id":"sa-30","t":"30.速讀-5","l":1,"d":0,"m":24,"r":24,"n":""},{"id":"sa-31","t":"31.速讀-6","l":1,"d":0,"m":23,"r":23,"n":""},{"id":"sa-32","t":"32.曼陀羅筆記-1","l":1,"d":0,"m":35,"r":35,"n":""},{"id":"sa-33","t":"33.曼陀羅筆記-2","l":1,"d":0,"m":37,"r":37,"n":""},{"id":"sa-34","t":"34.ONE平方速讀法-1","l":1,"d":0,"m":27,"r":27,"n":""},{"id":"sa-35","t":"35.ONE平方速讀法-2","l":1,"d":0,"m":18,"r":18,"n":""},{"id":"sa-36","t":"36.ONE平方速讀法-3","l":1,"d":0,"m":18,"r":18,"n":""},{"id":"sa-37","t":"37.必勝腦學習法-1","l":1,"d":0,"m":14,"r":14,"n":""},{"id":"sa-38","t":"38.必勝腦學習法-2","l":1,"d":0,"m":29,"r":29,"n":""},{"id":"sa-39","t":"39.必勝腦學習法-3","l":1,"d":0,"m":25,"r":25,"n":""},{"id":"sa-40","t":"40.必勝腦學習法-4","l":1,"d":0,"m":26,"r":26,"n":""},{"id":"sa-41","t":"41.檔案式筆記","l":1,"d":0,"m":43,"r":43,"n":""},{"id":"sa-42","t":"42.英文速讀系統","l":1,"d":0,"m":41,"r":41,"n":""},{"id":"sa-43","t":"43.國文作文&文章背誦","l":1,"d":0,"m":40,"r":40,"n":""},{"id":"sa-44","t":"44.申論題&考試技巧-1","l":1,"d":0,"m":37,"r":37,"n":""},{"id":"sa-45","t":"45.考試技巧-2","l":1,"d":0,"m":24,"r":24,"n":""},{"id":"sa-46","t":"46.什麼是邏輯","l":1,"d":0,"m":28,"r":28,"n":""},{"id":"sa-47","t":"47.邏輯解題","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sa-48","t":"48.邏輯定義","l":1,"d":0,"m":24,"r":24,"n":""},{"id":"sa-49","t":"49.邏輯記憶&學習","l":1,"d":0,"m":14,"r":14,"n":""},{"id":"sa-50","t":"50.數理的邏輯","l":1,"d":0,"m":31,"r":31,"n":""},{"id":"sa-51","t":"51.法條的邏輯","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sa-52","t":"52.英文的邏輯","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sa-53","t":"53.國文的邏輯","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sa-54","t":"54.邏輯的謬誤","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sa-55","t":"55.時間管理","l":1,"d":0,"m":36,"r":36,"n":""},{"id":"sa-56","t":"56.財務管理","l":1,"d":0,"m":24,"r":24,"n":""},{"id":"sa-57","t":"57.時間管理-補充","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sa-58","t":"58.人生藍圖規畫","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sa-59","t":"59.研究&論文","l":1,"d":0,"m":30,"r":30,"n":""},{"id":"sa-60","t":"60.大學生的秘密","l":1,"d":0,"m":25,"r":25,"n":""},{"id":"sa-61","t":"61.口試＆面試","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sa-62","t":"62.考生情緒管理","l":1,"d":0,"m":18,"r":18,"n":""},{"id":"sa-63","t":"63.雙軸思維&記憶延伸應用","l":1,"d":0,"m":11,"r":11,"n":""}]},{"id":"sd-huang","name":"阿銘師的空間結構還原術","site":"seeds","url":"https://seeds.com.tw/my-courses/dr-huanghsienming","note":"學籽・黃獻銘中醫師；34 單元＋3 場學員直播錄影。上次看到 4-2 肩頸痠痛","items":[{"id":"sd-01","t":"1-1 自我介紹＆課程介紹","l":1,"d":1,"m":7,"r":0,"n":""},{"id":"sd-02","t":"1-2 正常的身心「均衡」是什麼？","l":1,"d":1,"m":19,"r":0,"n":""},{"id":"sd-03","t":"2-1 我為什麼會生病／疼痛？","l":1,"d":1,"m":13,"r":0,"n":""},{"id":"sd-04","t":"2-2 認識人體的空間","l":1,"d":1,"m":14,"r":0,"n":""},{"id":"sd-05","t":"2-3 空間不足＆病痛的關係：痛處不一定等於傷處","l":1,"d":1,"m":15,"r":0,"n":""},{"id":"sd-06","t":"3-1 粗調節輪：前言＆身體旋轉檢測","l":1,"d":0,"m":28,"r":28,"n":""},{"id":"sd-07","t":"3-2 粗調節輪：脈診","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sd-08","t":"3-3 細調節輪：細部檢測與定位","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sd-09","t":"4-1 前言","l":1,"d":1,"m":4,"r":0,"n":""},{"id":"sd-10","t":"4-2 肩頸痠痛","l":1,"d":0,"m":25,"r":25,"n":""},{"id":"sd-11","t":"4-3 偏頭痛","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sd-12","t":"4-4 顳顎關節痛","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sd-13","t":"4-5 胸悶呼吸淺、心悸","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"sd-14","t":"4-6 五十肩","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sd-15","t":"4-7 膏肓痛","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sd-16","t":"4-8 網球肘（肱骨外上髁炎）","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sd-17","t":"4-9 滑鼠手（腕隧道症候群）","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sd-18","t":"4-10 媽媽手","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sd-19","t":"4-11 下背痛","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"sd-20","t":"4-12 髖關節疼痛","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sd-21","t":"4-13 足底筋膜緊繃","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sd-22","t":"4-14 坐骨神經痛","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sd-23","t":"4-15 全身疼痛（纖維肌痛症）","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sd-24","t":"4-16 膝蓋關節疼痛","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sd-25","t":"4-17 腸胃問題＆高血壓","l":1,"d":0,"m":22,"r":22,"n":""},{"id":"sd-26","t":"5-1 我有『自律神經失調』嗎？","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sd-27","t":"5-2 阿銘師空間觀念裡的自律神經失調","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sd-28","t":"6-1 功操：前言＆警語","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sd-29","t":"6-2 縱向筋膜功操","l":1,"d":0,"m":32,"r":32,"n":""},{"id":"sd-30","t":"6-3 橫向筋膜功操","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"sd-31","t":"6-4 迷走神經功操","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sd-32","t":"6-5 【跟練】縱向筋膜功操大全套","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sd-33","t":"6-6 【跟練】橫向筋膜功操大全套","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sd-34","t":"6-7 【跟練】迷走神經功操大全套","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sd-35","t":"直播1 第一次學員專屬直播（2025/09/30）","l":1,"d":0,"m":65,"r":65,"n":""},{"id":"sd-36","t":"直播2 第二次學員專屬直播（2025/12/30）","l":1,"d":0,"m":60,"r":60,"n":""},{"id":"sd-37","t":"直播3 第三次學員專屬直播（2026/03/03）","l":1,"d":0,"m":71,"r":71,"n":""}]},{"id":"pp-donglian","name":"返古法．動煉功","site":"pressplay","url":"https://www.pressplay.cc/member/learning/projects/94EBDBE4C7A1C6A9D7CE8EDC658D1162/articles","manual":true,"note":"PressPlay・古法為基，鍛煉深層之功；平台顯示進度 41%（平台不給每支完成狀態，請自行勾選）。上次學到：彈力帶式-左右彎腰通五臟","items":[{"id":"pp-donglian-001","t":"邏輯課(一)序章","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-donglian-002","t":"邏輯課(二)最基礎的設計目的","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-donglian-003","t":"邏輯課(三)鍛鍊的目的","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-donglian-004","t":"邏輯課(四)動煉功鍛煉原則","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-donglian-005","t":"邏輯課(五)鍛煉的原則","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-donglian-006","t":"邏輯課(六)以簡馭繁之道","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-donglian-007","t":"邏輯課(七)鍛煉的關鍵處","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-donglian-008","t":"邏輯課(八)動煉功的特殊作用","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-donglian-009","t":"邏輯課(九)練功的必經過程","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-donglian-010","t":"邏輯課(十)鍛煉的終極目的","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-donglian-011","t":"邏輯課(十一)現代鍛煉缺失的根本","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-donglian-012","t":"邏輯課(十二)動煉功的困難處","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-donglian-013","t":"邏輯課(十三)「覺」要怎麼煉","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-donglian-014","t":"邏輯課(十四)動煉功的終極目的","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-donglian-015","t":"腿式-原地左右跨步走","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-donglian-016","t":"腿式-原地蹲步走","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-donglian-017","t":"彈力帶式-前後擺動貫經絡","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-donglian-018","t":"彈力帶式-左右彎腰通五臟","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-donglian-019","t":"彈力帶式-背後拉弓活肩夾","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-donglian-020","t":"彈力帶式-左右開弓壯背筋","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-donglian-021","t":"彈力帶式-上下刷背絡肩頸","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-donglian-022","t":"酷賽式-基本式","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"pp-donglian-023","t":"酷賽式-進階式","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"pp-donglian-024","t":"酷賽式-超進階式","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"pp-donglian-025","t":"沙袋式-畫圓式","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-donglian-026","t":"沙袋式-上下式","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-donglian-027","t":"磨豆功","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-donglian-028","t":"特別課程-日常運用","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"pp-donglian-029","t":"特別課程-最簡單的鍛煉方式","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-donglian-030","t":"人為什麼要修行","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-donglian-031","t":"特別課程-站樁","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-donglian-032","t":"特別追加課程(五)鍛鍊的正確概念2-1","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-donglian-033","t":"特別追加課程(一)如何正確凝聚自身能量","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-donglian-034","t":"特別追加課程(六)動煉養生操壹","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-donglian-035","t":"特別課程-『力』的運用(1)","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-donglian-036","t":"特別課程-『力』的運用(2)","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-donglian-037","t":"特別追加課程(一)對於鍛鍊應該具備的正確認知","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-donglian-038","t":"特別追加課程(三)隱藏於無形中的鍛煉成果","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-donglian-039","t":"動作不標準怎麼辦？動煉功問答","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-donglian-040","t":"鍛煉時間不夠怎麼安排？動煉功問答2","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-donglian-041","t":"學員問答-氣虛怎麼辦？(1)","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-donglian-042","t":"動煉功問答-氣虛怎麼辦？(3)","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-donglian-043","t":"動煉功實操課程","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-donglian-044","t":"學員問答-氣虛怎麼辦？(2)","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-donglian-045","t":"動煉功問答-氣虛怎麼辦？(4)","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-donglian-046","t":"不會『覺』怎麼辦？動煉功問答3","l":1,"d":0,"m":3,"r":3,"n":""}]},{"id":"pp-guMo","name":"骨膜深層放鬆術","site":"pressplay","url":"https://www.pressplay.cc/member/learning/projects/2DA7483CB3973D63BCB96402AF88BDD2/articles","manual":true,"note":"PressPlay・內田勇志；舒緩緊繃 x 自信美型；平台顯示進度 29%（平台不給每支完成狀態，請自行勾選）。上次學到：4-3 胸腔篇；CH5~7 與 6-2~6-4 純享版平台標示 7/16 公開","items":[{"id":"pp-guMo-001","t":"迷你課 EP1 骨膜按摩 ↔ 一般按摩 差在哪？","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"pp-guMo-002","t":"迷你課 EP2 原來腰痠背痛，問題可能出在大腿內側","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"pp-guMo-003","t":"迷你課 EP3 烏龜頸，其實不是脖子的問題","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"pp-guMo-004","t":"1-1 老師背景與專業介紹","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-guMo-005","t":"1-2 課程重點與使用說明","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-guMo-006","t":"1-3 什麼是「不易疲累的輕盈狀態」？","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-guMo-007","t":"1-4 骨膜保養與按摩的訣竅","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-guMo-008","t":"1-5 骨膜深層放鬆術常見 Q&A","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"pp-guMo-009","t":"2-1 理想體態的構成要素","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-guMo-010","t":"2-2 身體為何會失衡？","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-guMo-011","t":"2-3 身體失衡，會產生哪些連鎖反應？","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-guMo-012","t":"2-4 為什麼改善的關鍵是「骨膜」？","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-guMo-013","t":"2-5 輕盈體態的基礎：認識身體能量的運作機制","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-guMo-014","t":"2-6 喚醒沈睡肌群，讓日常動作轉化為肌力訓練","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-guMo-015","t":"3-1 操作基礎","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-guMo-016","t":"3-2 提升效果的關鍵","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-guMo-017","t":"3-3 正確位置的判斷方法","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-guMo-018","t":"3-4 練習前的注意事項","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-guMo-019","t":"3-5 自我體態檢測","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-guMo-020","t":"4-0 CH4 使用說明書","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-guMo-021","t":"4-1 練習前的身體狀況確認","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-guMo-022","t":"4-2 骨盆篇｜重心回正，體態自然端正","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"pp-guMo-023","t":"4-3 胸腔篇｜放鬆胸腔，肩背充分舒展","l":1,"d":0,"m":24,"r":24,"n":""},{"id":"pp-guMo-024","t":"4-4 手臂篇｜放鬆手臂，動作更加流暢","l":1,"d":0,"m":19,"r":19,"n":""},{"id":"pp-guMo-025","t":"4-5 大腿篇｜活化大腿，腿型流暢筆直","l":1,"d":0,"m":22,"r":22,"n":""},{"id":"pp-guMo-026","t":"4-6 小腿篇｜小腿減壓，告別腫脹沉重","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"pp-guMo-027","t":"4-7 腹部篇｜腹部紓壓，呼吸輕鬆順暢","l":1,"d":0,"m":23,"r":23,"n":""},{"id":"pp-guMo-028","t":"4-8 頭部、自律神經篇｜頭部釋壓，身心回歸平穩","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"pp-guMo-029","t":"5-0 CH5 使用說明書","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-guMo-030","t":"5-1 蘋果型身材跟練菜單","l":1,"d":0,"m":36,"r":36,"n":""},{"id":"pp-guMo-031","t":"5-2 梨型身材跟練菜單","l":1,"d":0,"m":33,"r":33,"n":""},{"id":"pp-guMo-032","t":"5-3 直筒型身材跟練菜單","l":1,"d":0,"m":36,"r":36,"n":""},{"id":"pp-guMo-033","t":"5-4 骨盆前傾型跟練菜單","l":1,"d":0,"m":35,"r":35,"n":""},{"id":"pp-guMo-034","t":"5-5 圓肩駝背型跟練菜單","l":1,"d":0,"m":34,"r":34,"n":""},{"id":"pp-guMo-035","t":"5-6 3C 低頭頸型跟練菜單","l":1,"d":0,"m":37,"r":37,"n":""},{"id":"pp-guMo-036","t":"5-7 聳肩型跟練菜單","l":1,"d":0,"m":36,"r":36,"n":""},{"id":"pp-guMo-037","t":"5-8 平背型跟練菜單","l":1,"d":0,"m":33,"r":33,"n":""},{"id":"pp-guMo-038","t":"6-1 如何正確使用身體","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-guMo-039","t":"6-2 正確坐姿","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-guMo-040","t":"6-3 正確站姿","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-guMo-041","t":"6-4 正確走路姿勢","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-guMo-042","t":"7-1 練習後的身體變化確認","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-guMo-043","t":"7-2 練習後的注意事項","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-guMo-044","t":"7-3 日常保養時段建議","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-guMo-045","t":"7-4 課程結語","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-guMo-046","t":"純享版 4-2 骨盆篇","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"pp-guMo-047","t":"純享版 4-2 骨盆篇（中文配音）","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"pp-guMo-048","t":"純享版 4-3 胸腔篇","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"pp-guMo-049","t":"純享版 4-3 胸腔篇（中文配音）","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"pp-guMo-050","t":"純享版 4-4 手臂篇","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"pp-guMo-051","t":"純享版 4-4 手臂篇（中文配音）","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"pp-guMo-052","t":"純享版 4-5 大腿篇","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"pp-guMo-053","t":"純享版 4-5 大腿篇（中文配音）","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"pp-guMo-054","t":"純享版 4-6 小腿篇","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-guMo-055","t":"純享版 4-6 小腿篇（中文配音）","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"pp-guMo-056","t":"純享版 4-7 腹部篇","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"pp-guMo-057","t":"純享版 4-7 腹部篇（中文配音）","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"pp-guMo-058","t":"純享版 4-8 頭部、自律神經篇","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-guMo-059","t":"純享版 4-8 頭部、自律神經篇（中文配音）","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-guMo-060","t":"純享版 6-2 正確坐姿","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"pp-guMo-061","t":"純享版 6-2 正確坐姿（中文配音）","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"pp-guMo-062","t":"純享版 6-3 正確站姿","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-guMo-063","t":"純享版 6-3 正確站姿（中文配音）","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-guMo-064","t":"純享版 6-4 正確走路姿勢","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"pp-guMo-065","t":"純享版 6-4 正確走路姿勢（中文配音）","l":1,"d":0,"m":1,"r":1,"n":""}]},{"id":"pp-yijing","name":"易經改運全攻略","site":"pressplay","url":"https://www.pressplay.cc/member/learning/projects/07604087B4A91A12CB2C93E90E074A02/articles","manual":true,"note":"PressPlay・看懂命運與局勢；平台顯示進度 25%（平台不給每支完成狀態，請自行勾選）。上次學到：8-3 小六壬實戰演練","items":[{"id":"pp-yijing-001","t":"1-1 易經，人類最早的「趨勢分析系統」","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"pp-yijing-002","t":"1-2 所有玄學的「底層邏輯」","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"pp-yijing-003","t":"1-3 從易經理解命運的運作結構：天地人三才","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"pp-yijing-004","t":"2-1-0 認識命格（前言）","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-yijing-005","t":"2-1-1 認識命格（乾命）","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"pp-yijing-006","t":"2-1-2 認識命格（兌命）","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-yijing-007","t":"2-1-3 認識命格（離命）","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-yijing-008","t":"2-1-4 認識命格（震命）","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-yijing-009","t":"2-1-5 認識命格（巽命）","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-yijing-010","t":"2-1-6 認識命格（坎命）","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-yijing-011","t":"2-1-7 認識命格（艮命）","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-yijing-012","t":"2-1-8 認識命格（坤命・結語）","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"pp-yijing-013","t":"2-2 命格速算","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-yijing-014","t":"3-1 易經命格如何決定個人財庫規模","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-yijing-015","t":"3-2 從命格找到你的賺錢天賦","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"pp-yijing-016","t":"3-3 命格漏財解析、教你化解漏財危機","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"pp-yijing-017","t":"3-4 易經改運實戰：八命格招財守庫風水局","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"pp-yijing-018","t":"4-0 看懂八大命格的感情特質","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-yijing-019","t":"4-1-0 八命格愛情腳本（前言）","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-yijing-020","t":"4-1-1 八命格愛情腳本（乾命）","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-yijing-021","t":"4-1-2 八命格愛情腳本（坤命）","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-yijing-022","t":"4-1-3 八命格愛情腳本（震命）","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-yijing-023","t":"4-1-4 八命格愛情腳本（巽命）","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-yijing-024","t":"4-1-5 八命格愛情腳本（離命）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-yijing-025","t":"4-1-6 八命格愛情腳本（坎命）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-yijing-026","t":"4-1-7 八命格愛情腳本（艮命）","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-yijing-027","t":"4-1-8 八命格愛情腳本（兌命）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-yijing-028","t":"4-2 八命格的正緣組合","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"pp-yijing-029","t":"4-3 從命格看不同性格的衝突與相處之道","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"pp-yijing-030","t":"4-4 易經改運實戰：八大命格桃花和合風水局","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"pp-yijing-031","t":"5-1 八命格在職場上的優勢與破口","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-yijing-032","t":"5-2-0 易經八命格","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"pp-yijing-033","t":"5-2-1 職場關係解析（乾命）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-yijing-034","t":"5-2-2 職場關係解析（兌命）","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-yijing-035","t":"5-2-3 職場關係解析（離命）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-yijing-036","t":"5-2-4 職場關係解析（震命）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-yijing-037","t":"5-2-5 職場關係解析（巽命）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-yijing-038","t":"5-2-6 職場關係解析（坎命）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-yijing-039","t":"5-2-7 職場關係解析（艮命）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-yijing-040","t":"5-2-8 職場關係解析（坤命）","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-yijing-041","t":"5-3 易經識人術：職場衝突預警與化解","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"pp-yijing-042","t":"5-4-1 風水改運實戰（上）貴人相助風水局","l":1,"d":0,"m":22,"r":22,"n":""},{"id":"pp-yijing-043","t":"5-4-2 風水改運實戰（下）貴人相助風水局","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-yijing-044","t":"6-1 用農民曆擇好日（上）","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"pp-yijing-045","t":"6-2 用農民曆擇好日（下）","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"pp-yijing-046","t":"7-1 根據命格挑吉方","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"pp-yijing-047","t":"8-1 小六壬是什麼？現代人極速決策神器","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"pp-yijing-048","t":"8-2 小六壬操作步驟說明","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-yijing-049","t":"8-3 小六壬實戰演練","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-yijing-050","t":"8-4 小六壬操作注意事項","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"pp-yijing-051","t":"課程試看：八大命格有利方位和建議","l":1,"d":0,"m":3,"r":3,"n":""}]},{"id":"pp-disc","name":"DiSC人心洞悉術","site":"pressplay","url":"https://www.pressplay.cc/member/learning/projects/08F1A8E56FFBD1641A4EC29E3DB7735A/articles","manual":true,"note":"PressPlay・看懂行為動機，培養人際溝通應對力；平台顯示進度 19%（平台不給每支完成狀態，請自行勾選）。上次學到：5.3.1 講義（講義類項目未列入）","items":[{"id":"pp-disc-001","t":"1.1.0 什麼是DiSC：從人類行為看懂他的運作系統","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-002","t":"1.1.1 你的強大靈魂：D風格說明","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-003","t":"1.1.2 你的有趣靈魂：i風格說明","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-004","t":"1.1.3 你的溫暖靈魂：S風格說明","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-005","t":"1.1.4 你的智慧靈魂：C風格說明","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-006","t":"1.1.5 整合：我們四個靈魂都有","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"pp-disc-007","t":"1.2.0 8個關鍵字，帶你看懂人類行為","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-008","t":"1.2.1 火屬性 D風格的關鍵字解析","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-009","t":"1.2.2 風屬性 i風格關鍵字解析","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-010","t":"1.2.3 水屬性 S風格關鍵字解析","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-011","t":"1.2.4 地屬性 C風格關鍵字解析","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-012","t":"1.3.1 重視行動的複合型：Di 與 iD","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-013","t":"1.3.2 重視人際的複合型：iS 與 Si","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-014","t":"1.3.3 重視穩定的複合型：SC 與 CS","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-015","t":"1.3.4 重視挑戰的複合型：CD 與 DC","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-016","t":"1.3.5 對角線互動說明","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-017","t":"1.3.6 總結：你不是一個風格，你是獨特的組成","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-018","t":"2.1.1 從文字及內容看懂對方的屬性與靈魂","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-019","t":"2.1.2 從外觀或行為看懂對方的屬性與靈魂","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-disc-020","t":"2.1.3 從聲音和對話聽懂對方的屬性與靈魂","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-disc-021","t":"2.1.4 從情境和氛圍感受對方的屬性與靈魂","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-disc-022","t":"2.2.1 D風格：目標與期待管理","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-023","t":"2.2.2 i風格：情緒與關係管理","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-disc-024","t":"2.2.3 S風格：陪伴與安全感管理","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"pp-disc-025","t":"2.2.4 C風格：資訊與流程管理","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-disc-026","t":"2.3.1 D風格如何與其他風格應對","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-027","t":"2.3.2 i風格如何與其他風格應對","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-028","t":"2.3.3 S風格如何與其他風格應對","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-029","t":"2.3.4 C風格如何與其他風格應對","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-030","t":"3.1.1 面對主管：高控制感的主管應對方案","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"pp-disc-031","t":"3.1.2 面對主管：常情緒化的主管應對方案","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-032","t":"3.1.3 面對主管：過於妥協的主管應對方案","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-033","t":"3.1.4 面對主管：苛求細節的主管應對方案","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-034","t":"3.2.1 同事相處：主觀性強的同事合作方案","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-035","t":"3.2.2 同事相處：八卦喧鬧的同事合作方案","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-036","t":"3.2.3 同事相處：沒有主見的同事合作方案","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-037","t":"3.2.4 同事相處：僵化龜毛的同事合作方案","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-038","t":"3.3.1 部屬帶領：魯莽冒進的部屬帶領方案","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-039","t":"3.3.2 部屬帶領：隨興而為的部屬帶領方案","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-040","t":"3.3.3 部屬帶領：過度依賴的部屬帶領方案","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-041","t":"3.3.4 部屬帶領：挑剔拖延的部屬帶領方案","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-042","t":"3.4.1 客戶互動：目標導向的客戶成交思考","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-043","t":"3.4.2 客戶互動：熱情友好的客戶成交思考","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-044","t":"3.4.3 客戶互動：溫和有禮的客戶成交思考","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-045","t":"3.4.4 客戶互動：細節至上的客戶成交思考","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-046","t":"4.1.1 朋友互動：自信果斷的朋友相處方案","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-047","t":"4.1.2 朋友互動：開朗熱情的朋友相處方案","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-048","t":"4.1.3 朋友互動：溫暖可靠的朋友相處方案","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-049","t":"4.1.4 朋友互動：細心有料的朋友相處方案","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-050","t":"4.2.1 戀愛互動：主導性強的伴侶相處方案","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-051","t":"4.2.2 戀愛互動：活力滿滿的伴侶相處方案","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-052","t":"4.2.3 戀愛互動：溫柔體貼的伴侶相處方案","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-053","t":"4.2.4 戀愛互動：言語冷淡的伴侶相處方案","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-disc-054","t":"4.3.1 父母互動：果斷主導的父母應對方案","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-055","t":"4.3.2 父母互動：需要聊天的父母應對方案","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-056","t":"4.3.3 父母互動：小劇場多的父母應對方案","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-057","t":"4.3.4 父母互動：規矩規劃的父母應對方案","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-058","t":"4.4.1 親子互動：自信自主的小孩引導思考","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-059","t":"4.4.2 親子互動：樂觀開朗的小孩引導思考","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-060","t":"4.4.3 親子互動：溫和友善的小孩引導思考","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"pp-disc-061","t":"4.4.4 親子互動：細心專注的小孩引導思考","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-062","t":"5.1.1 D風格能量管理：開創與挑戰的工作環境","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"pp-disc-063","t":"5.1.2 i風格能量管理：創意與友善的工作環境","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-064","t":"5.1.3 S風格能量管理：穩定與和諧的工作環境","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-065","t":"5.1.4 C風格能量管理：規則與理性的工作環境","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-066","t":"5.2.1 合作要互補還是相同","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-067","t":"5.2.2 遇到衝突該怎麼辦","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-068","t":"5.2.3 如何拓展自己風格","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-069","t":"5.3.1 我在不同情境的風格","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-070","t":"5.3.2 不同風格的修練計畫","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"pp-disc-071","t":"5.3.3 我會怎麼看待身邊的人","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"pp-disc-072","t":"5.3.4 DiSC 運用思考表","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"pp-disc-073","t":"5.4 結語：恭喜你擁有了看懂我與他人的能力","l":1,"d":0,"m":6,"r":6,"n":""}]},{"id":"sat-fit","name":"自主健身百科","site":"sat","url":"https://sat.cool/classroom/71","manual":true,"note":"知識衛星・動思學院 MoveThink・用運動科學客製專屬訓練計畫；平台顯示進度 16%（平台不給每支完成狀態，請自行勾選）","items":[{"id":"sat-fit-001","t":"課程使用指南","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-fit-002","t":"1-1 建立正確健身心態","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-fit-003","t":"1-2 辨別運動訓練差異","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-004","t":"1-3 設定個人健身目標","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-fit-005","t":"2-1 認識多元訓練類型","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-006","t":"2-2 重量訓練底層原理","l":1,"d":0,"m":14,"r":14,"n":""},{"id":"sat-fit-007","t":"2-3 重訓增肌科學原理","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-fit-008","t":"3-1 了解什麼是核心訓練","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-fit-009","t":"3-2 動作建立｜骨盆、脊椎中立位","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-fit-010","t":"3-3 動作建立｜呼吸模式建立","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-fit-011","t":"3-4 核心訓練｜死蟲仰臥抬腿","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-012","t":"3-5 核心訓練｜棒式（變化型）、坐姿捲腹","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-fit-013","t":"3-6 核心訓練｜左右平面動作－側棒式（變化型）","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-fit-014","t":"3-7 核心訓練｜抗旋轉","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-fit-015","t":"3-8 總結","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"sat-fit-016","t":"4-1 上肢推主要動作模式（胸、肩、三頭）","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"sat-fit-017","t":"4-2 胸、肩、三頭解剖與肌動學","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-018","t":"4-3 胸肌訓練｜伏地挺身","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-fit-019","t":"4-4 胸肌訓練｜槓鈴臥推（含器械臥推）","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-fit-020","t":"4-5 胸肌訓練｜啞鈴臥推","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-fit-021","t":"4-6 胸肌訓練｜滑輪胸推、飛鳥夾胸","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-fit-022","t":"4-7 肩膀訓練｜啞鈴肩推（含器械肩推、彈力帶肩推）","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-fit-023","t":"4-8 肩膀訓練｜啞鈴前中平舉（含彈力帶平舉）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-024","t":"4-9 手臂訓練｜繩索三頭下壓","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-fit-025","t":"4-10 總結","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"sat-fit-026","t":"5-1 上肢拉主要動作模式（背、肩胛骨、二頭）","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"sat-fit-027","t":"5-2 背、肩胛骨、二頭解剖與肌動學","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-fit-028","t":"5-3 背肌訓練｜引體向上（含彈力帶輔助）","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-fit-029","t":"5-4 背肌訓練｜滑輪下拉","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-030","t":"5-5 背肌訓練｜坐姿划船（含器械划船、彈力帶划船、居家版本）","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-fit-031","t":"5-6 背肌訓練｜單臂啞鈴划船","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-032","t":"5-7 背肌訓練｜滑輪臉拉","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-033","t":"5-8 手臂訓練｜啞鈴二頭彎舉","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-fit-034","t":"5-9 總結","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"sat-fit-035","t":"6-1 下肢主要動作模式（腿前、臀部、腿後）","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-fit-036","t":"6-2 腿前、臀部、腿後解剖與肌動學","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-fit-037","t":"6-3 動作建立｜髖鉸鏈、彈力帶髖外展、螃蟹走","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-fit-038","t":"6-4 腿前側訓練｜深蹲（使用多樣器材）","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"sat-fit-039","t":"6-5 腿前側訓練｜分腿蹲","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-040","t":"6-6 腿前側訓練｜登階","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-041","t":"6-7 腿前側訓練｜腿推機","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-fit-042","t":"6-8 臀腿後側訓練｜硬舉（含羅馬尼亞硬舉、相撲硬舉）","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-fit-043","t":"6-9 臀腿後側訓練｜單腿硬舉","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-044","t":"6-10 臀腿後側訓練｜臀推（含臀推機、橋式）","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-fit-045","t":"6-11 臀腿後側訓練｜側蹲","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-fit-046","t":"6-12 總結","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"sat-fit-047","t":"7-1 認識手套","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-fit-048","t":"7-2 認識護腕／護膝","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-fit-049","t":"7-3 認識拉力帶 / 握力帶","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-050","t":"7-4 認識訓練鞋","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-fit-051","t":"7-5 認識重訓腰帶","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-fit-052","t":"7-6 認識滾筒 / 按摩球","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-fit-053","t":"7-7 總結","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"sat-fit-054","t":"8-1 伸展正確觀念","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-fit-055","t":"8-2 自主靜態評估","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-fit-056","t":"8-3 脊椎動態檢測","l":1,"d":0,"m":14,"r":14,"n":""},{"id":"sat-fit-057","t":"8-4 肩關節動態檢測","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sat-fit-058","t":"8-5 腕關節動態檢測","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-fit-059","t":"8-6 髖關節動態檢測","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-fit-060","t":"8-7 踝關節動態檢測","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-fit-061","t":"8-8 建立動態生活","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-fit-062","t":"8-9 總結","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"sat-fit-063","t":"9-1 具體目標設定","l":1,"d":0,"m":29,"r":29,"n":""},{"id":"sat-fit-064","t":"9-2 自主安排訓練課表","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"sat-fit-065","t":"9-3 訓練課表介紹","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-fit-066","t":"9-4 矯正課表介紹","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-fit-067","t":"9-5 實際案例討論","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-fit-068","t":"10-1 營養學章節概覽","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-fit-069","t":"10-2 建立正確健康意識","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sat-fit-070","t":"10-3 有效控制總熱量","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-fit-071","t":"10-4 認識巨量營養素","l":1,"d":0,"m":41,"r":41,"n":""},{"id":"sat-fit-072","t":"10-5 認識微量營養素","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-fit-073","t":"10-6 有效建立飲食習慣","l":1,"d":0,"m":14,"r":14,"n":""},{"id":"sat-fit-074","t":"10-7 運動時機的營養攝取","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-fit-075","t":"10-8 有效選擇運動補給品","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sat-fit-076","t":"11-1 恢復","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-fit-077","t":"11-2 睡眠","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-fit-078","t":"11-3 主動恢復","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-fit-079","t":"11-4 被動恢復","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-fit-080","t":"12-1 即刻開始，成為自己的健身教練","l":1,"d":0,"m":3,"r":3,"n":""}]},{"id":"sat-french","name":"阿辰師的法式料理","site":"sat","url":"https://sat.cool/classroom/91","manual":true,"note":"知識衛星・阿辰師・用簡單的食材，打造你的法式美味；平台顯示進度 6%（平台不給每支完成狀態，請自行勾選）","items":[{"id":"sat-french-001","t":"0-1 用簡單的方式，烹調出適合每個人的料理口味","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-french-002","t":"1-1 五道法式經典料理食材與選取","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-french-003","t":"1-2 巴西利蒜味奶油蝦","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"sat-french-004","t":"1-3 波爾多紅酒醬牛排","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"sat-french-005","t":"1-4 普羅旺斯魚肉派","l":1,"d":0,"m":27,"r":27,"n":""},{"id":"sat-french-006","t":"1-5 費南德焗烤魚排麵","l":1,"d":0,"m":24,"r":24,"n":""},{"id":"sat-french-007","t":"1-6 鄉村蘋果克拉芙提","l":1,"d":0,"m":20,"r":20,"n":""},{"id":"sat-french-008","t":"2-1 五道料理，帶你走入法國家庭聚會","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-french-009","t":"2-2 巴沙米克醋燒豬排","l":1,"d":0,"m":24,"r":24,"n":""},{"id":"sat-french-010","t":"2-3 巴斯克燉雞","l":1,"d":0,"m":23,"r":23,"n":""},{"id":"sat-french-011","t":"2-4 森林野菇醬小里肌","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"sat-french-012","t":"2-5 火上鍋 Pot au Feu","l":1,"d":0,"m":23,"r":23,"n":""},{"id":"sat-french-013","t":"2-6 老奶奶米布丁","l":1,"d":0,"m":19,"r":19,"n":""},{"id":"sat-french-014","t":"3-1 那些受法國當地歡迎的四道蔬食菜單","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-french-015","t":"3-2 南法田園蔬菜總匯","l":1,"d":0,"m":22,"r":22,"n":""},{"id":"sat-french-016","t":"3-3 葡萄香醋燜野菇","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-french-017","t":"3-4 安達魯西亞番茄冷湯 Gaspacho","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"sat-french-018","t":"3-5 香檸堅果蒜香義大利麵","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"sat-french-019","t":"4-1 美味又快速的料理原則","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-french-020","t":"4-2 雞柳時蔬溫沙拉","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"sat-french-021","t":"4-3 Paprika鮮蝦櫛瓜麵","l":1,"d":0,"m":20,"r":20,"n":""},{"id":"sat-french-022","t":"4-4 甜椒牛肉筆管麵","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sat-french-023","t":"4-5 香料南瓜泥烤雞腿","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sat-french-024","t":"4-6 帕蒙提耶豬肉派","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sat-french-025","t":"5-1 法國廚房裡的家常智慧：一種食材變身不同料理","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-french-026","t":"5-2 用雞胸肉做出早餐－鐵板雞肉餅花椰菜","l":1,"d":0,"m":18,"r":18,"n":""},{"id":"sat-french-027","t":"5-3 用雞胸肉做出午餐－格紋雞胸花菜泥","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sat-french-028","t":"5-4 用雞胸肉做出晚餐－花椰菜蛋碎炒雞柳","l":1,"d":0,"m":14,"r":14,"n":""},{"id":"sat-french-029","t":"5-5 適合當早餐的蛋料理－法式蔬菜蛋捲","l":1,"d":0,"m":19,"r":19,"n":""},{"id":"sat-french-030","t":"5-6 適合當午餐的蛋料理－羅勒野菇烘蛋","l":1,"d":0,"m":19,"r":19,"n":""},{"id":"sat-french-031","t":"5-7 適合當晚餐的蛋料理－酪梨水波蛋綜合菇","l":1,"d":0,"m":24,"r":24,"n":""},{"id":"sat-french-032","t":"6-1 用絕配食材做料理，減重料理絕對不能不好吃！","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-french-033","t":"6-2 里肌香料烤時蔬","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sat-french-034","t":"6-3 脆皮腿排處女醬","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"sat-french-035","t":"6-4 辣味獵人燉花生","l":1,"d":0,"m":19,"r":19,"n":""},{"id":"sat-french-036","t":"Bonus 法式中秋特輯（香料檸檬雞肉串、法式香腸三明治、香草奶油豬里肌、烤牛肉沙拉）","l":1,"d":0,"m":42,"r":42,"n":""},{"id":"sat-french-037","t":"7-1 五道令你眼睛為之一亮的台法融合大餐","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-french-038","t":"7-2 香醋番茄皮蛋盅","l":1,"d":0,"m":20,"r":20,"n":""},{"id":"sat-french-039","t":"7-3 聖日耳曼蔬菜濃湯","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"sat-french-040","t":"7-4 安娜地瓜","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sat-french-041","t":"7-5 巴斯克花枝香腸","l":1,"d":0,"m":30,"r":30,"n":""},{"id":"sat-french-042","t":"7-6 紅酒燉子排","l":1,"d":0,"m":23,"r":23,"n":""},{"id":"sat-french-043","t":"8-1 前菜、主菜、甜點｜交織你餐桌上的法式三重奏","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-french-044","t":"8-2 做出你的法式套餐（甜點＋主餐＋前菜）","l":1,"d":0,"m":73,"r":73,"n":""},{"id":"sat-french-045","t":"9-1 帶你用因地制宜的食材，做不同食材的靈感變化","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-french-046","t":"9-2 法式料理的醬汁與高湯","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-french-047","t":"9-3 擺盤搭配技法｜形、色、質的應用","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-french-048","t":"9-4 那些年，阿辰師的私廚經驗分享","l":1,"d":0,"m":6,"r":6,"n":""}]},{"id":"sat-guasha","name":"14 天刮痧瘦臉計畫","site":"sat","url":"https://sat.cool/classroom/93","manual":true,"note":"知識衛星・Sua 수아・韓國治療師的 14 天刮痧瘦臉計畫；平台顯示進度 2%（平台不給每支完成狀態，請自行勾選）","items":[{"id":"sat-guasha-001","t":"0-1 上課前你要先知道！","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-guasha-002","t":"1-1 縮小臉蛋：去除咀嚼肌（含刮痧）","l":1,"d":0,"m":14,"r":14,"n":""},{"id":"sat-guasha-003","t":"1-2 縮小臉蛋：柔順的顴骨（含刮痧）","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sat-guasha-004","t":"1-3 打造豐盈飽滿的蘋果肌（含刮痧）","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-guasha-005","t":"1-4 打造光滑無皺紋的額頭（含刮痧）","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-guasha-006","t":"1-5 消除眉間皺紋（含刮痧）","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-guasha-007","t":"1-6 用自然的臥蠶放大眼睛（含刮痧）","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-guasha-008","t":"1-7 消除法令紋（含刮痧）","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-guasha-009","t":"1-8 上揚的嘴角與美麗微笑（含刮痧）","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-guasha-010","t":"1-9 打造自然豐滿的嘴唇","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-guasha-011","t":"1-10 去除臉頰凹陷、柔化臉部線條","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-guasha-012","t":"1-11 打造小 V 臉與明顯的下巴曲線","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-guasha-013","t":"1-12 去除雙下巴（含刮痧）","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"sat-guasha-014","t":"1-13 臉部拉提、改善下垂（含刮痧）","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sat-guasha-015","t":"1-14 去除臉部水腫、按摩淋巴（含刮痧）","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-guasha-016","t":"2-1 改善烏龜頸（含刮痧）","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sat-guasha-017","t":"2-2 打造鎖骨線與柔順的脖子（含刮痧）","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-guasha-018","t":"2-3 打造肩部線條與纖細頸部（含刮痧）","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-guasha-019","t":"2-4 緩解沉重的肩膀壓力","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"sat-guasha-020","t":"2-5 去除脖紋","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-guasha-021","t":"2-6 肩部矯正：改善不對稱肩膀高度","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-guasha-022","t":"2-7 肩部矯正：改善圓肩（含刮痧）","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-guasha-023","t":"2-8 減少頭痛：清爽的頭皮按摩（含刮痧）","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-guasha-024","t":"3-1 去除手臂贅肉（含刮痧）","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-guasha-025","t":"3-2 細腰（含刮痧）","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-guasha-026","t":"3-3 甩掉大腿肉與下肢浮腫","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-guasha-027","t":"3-4 打造纖細的小腿線條（含刮痧）","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-guasha-028","t":"3-5 全身伸展運動與姿勢矯正","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-guasha-029","t":"4-1 結語","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"sat-guasha-030","t":"純享版 1-1 縮小臉蛋：去除咀嚼肌","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-guasha-031","t":"純享版 1-2 縮小臉蛋：柔順的顴骨","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-guasha-032","t":"純享版 1-3 打造豐盈飽滿的蘋果肌","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-guasha-033","t":"純享版 1-4 打造光滑無皺紋的額頭","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-guasha-034","t":"純享版 1-5 消除眉間皺紋","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-guasha-035","t":"純享版 1-6 用自然的臥蠶放大眼睛","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-guasha-036","t":"純享版 1-7 消除法令紋","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-guasha-037","t":"純享版 1-8 上揚的嘴角與美麗微笑","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-guasha-038","t":"純享版 1-9 打造自然豐滿的嘴唇","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-guasha-039","t":"純享版 1-10 去除臉頰凹陷、柔化臉部線條","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-guasha-040","t":"純享版 1-11 打造小 V 臉與明顯的下巴曲線","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-guasha-041","t":"純享版 1-12 去除雙下巴","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-guasha-042","t":"純享版 1-13 臉部拉提、改善下垂","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-guasha-043","t":"純享版 1-14 去除臉部水腫、按摩淋巴","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-guasha-044","t":"純享版 2-1 改善烏龜頸","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-guasha-045","t":"純享版 2-2 打造鎖骨線與柔順的脖子","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-guasha-046","t":"純享版 2-3 打造肩部線條與纖細頸部","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-guasha-047","t":"純享版 2-4 緩解沉重的肩膀壓力","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-guasha-048","t":"純享版 2-5 去除脖紋","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-guasha-049","t":"純享版 2-6 肩部矯正：改善不對稱肩膀高度","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-guasha-050","t":"純享版 2-7 肩部矯正：改善圓肩","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-guasha-051","t":"純享版 2-8 減少頭痛：清爽的頭皮按摩","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-guasha-052","t":"純享版 3-1 去除手臂贅肉","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-guasha-053","t":"純享版 3-2 細腰","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-guasha-054","t":"純享版 3-3 甩掉大腿肉與下肢浮腫","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-guasha-055","t":"純享版 3-4 打造纖細的小腿線條","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-guasha-056","t":"純享版 3-5 全身伸展運動與姿勢矯正","l":1,"d":0,"m":6,"r":6,"n":""}]},{"id":"sat-supp","name":"藥師的保健品全指南","site":"sat","url":"https://sat.cool/classroom/117","manual":true,"note":"知識衛星・小花藥師 花逸修・打造精準有效的攝取計畫；平台顯示進度 22%（平台不給每支完成狀態，請自行勾選）","items":[{"id":"sat-supp-001","t":"Ch0 課程使用說明書","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-supp-002","t":"1-1 保健品到底值不值得買？打破健康迷思，實話實說！","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-supp-003","t":"1-2 成分、吸收、效果一次搞懂！保健品如何真正發揮效用？","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-supp-004","t":"1-3 保健品吃多傷身？不可不知的過量隱憂！","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-supp-005","t":"1-4 選購保健品避開雷區，破解添加物的真相與謠言","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-supp-006","t":"1-5 不再被話術騙！教你聰明選擇最適合的保健品","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-supp-007","t":"1-6 藥師的選品祕技：看懂外盒標示，輕鬆挑對保健品","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-supp-008","t":"2-1 慢性過敏的減敏專屬檢核","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-supp-009","t":"2-2 健檢紅字的三高保健專屬檢核","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-supp-010","t":"2-3 學齡前的幼兒保健專屬檢核","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-supp-011","t":"2-4 青春期的青少年保健專屬檢核","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-supp-012","t":"2-5 高壓的上班族保健專屬檢核","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-supp-013","t":"2-6 熟齡的更年期保健專屬檢核","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-supp-014","t":"2-7 亞健康的銀髮族保健專屬檢核","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-supp-015","t":"3-1 眼睛保健：擺脫眼睛乾澀與疲勞，護眼成分大解析","l":1,"d":0,"m":24,"r":24,"n":""},{"id":"sat-supp-016","t":"3-2 腸道保健：順暢無負擔，益生菌的秘密成分與搭配","l":1,"d":0,"m":26,"r":26,"n":""},{"id":"sat-supp-017","t":"3-3 睡眠保健：一夜好眠的關鍵，詳解紓壓助眠成分","l":1,"d":0,"m":18,"r":18,"n":""},{"id":"sat-supp-018","t":"3-4 關節保健：維持靈活順暢，關節修護成分的科學選擇","l":1,"d":0,"m":20,"r":20,"n":""},{"id":"sat-supp-019","t":"3-5 心血管保健：控制三高的秘密，心血管健康成分全攻略","l":1,"d":0,"m":31,"r":31,"n":""},{"id":"sat-supp-020","t":"3-6 免疫保健：強化免疫系統，遠離感冒與過敏","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sat-supp-021","t":"3-7 女性私密處保健：呵護私密健康，擁有從內而外的舒適與自信","l":1,"d":0,"m":18,"r":18,"n":""},{"id":"sat-supp-022","t":"3-8 減重保健：健康瘦身不是夢，幫助燃脂控食的成分","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"sat-supp-023","t":"3-9 醫美保健：由內而外讓肌膚重現光彩","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"sat-supp-024","t":"3-10 備孕保健：準爸媽必備，幸福備孕！打造健康孕力的營養方案","l":1,"d":0,"m":19,"r":19,"n":""},{"id":"sat-supp-025","t":"3-11 更年期保健：讓更年成為新開始，全方位的調理方案","l":1,"d":0,"m":19,"r":19,"n":""},{"id":"sat-supp-026","t":"3-12 癌症保健：癌症病程調理，守護健康的保健方案","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"sat-supp-027","t":"3-13 落髮保健：別跟頭髮說再見","l":1,"d":0,"m":23,"r":23,"n":""},{"id":"sat-supp-028","t":"4-1 藥品與保健品的正確服用時間與方法","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-supp-029","t":"4-2 藥品與保健品的交互作用，你不可不知的禁忌","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-supp-030","t":"4-3 藥品與保健品怎麼搭最有效？正確使用、效果加倍！","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-supp-031","t":"Bonus 家庭常見疾病自我照護","l":1,"d":0,"m":33,"r":33,"n":""},{"id":"sat-supp-032","t":"Bonus 關於保健品的50道精選Q&A","l":1,"d":0,"m":60,"r":60,"n":""}]},{"id":"sat-skin","name":"韓系深層皮膚管理計畫","site":"sat","url":"https://sat.cool/classroom/118","manual":true,"note":"知識衛星・민슈아 Minshua・回穩膚況 X 改善瑕疵 X 升級保養；平台顯示進度 7%（平台不給每支完成狀態，請自行勾選）","items":[{"id":"sat-skin-001","t":"0-1 關於皮膚保養這件事","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-skin-002","t":"1-1 皮膚組成基礎理論｜了解皮膚，才能照顧好皮膚","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-skin-003","t":"1-2 保養常見錯誤全破解｜停止在不知不覺中傷害膚質","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-skin-004","t":"1-3 自我膚質檢測｜確認皮膚基底類型與當前膚況","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-skin-005","t":"1-4 季節與壓力的變動膚況｜根據不同肌膚狀況的因應保養策略","l":1,"d":0,"m":19,"r":19,"n":""},{"id":"sat-skin-006","t":"2-1 保養品檢查｜確認既有保養品的保存、衛生狀態","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-skin-007","t":"2-2 保養品保存注意事項｜保養品變質的原因與使用期限","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-skin-008","t":"2-3 保養品選擇重點｜根據自身膚質選擇適合保養產品","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-skin-009","t":"2-4 保養品成分全解析｜常見成分的功效、作用與自身適合度評估","l":1,"d":0,"m":20,"r":20,"n":""},{"id":"sat-skin-010","t":"2-5 保養品地雷成分｜各種膚質都應避免的有害成分","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-skin-011","t":"2-6 重要日子的妝前保養 & 臉部循環保養","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sat-skin-012","t":"3-1 Minshua 獨家！完美的洗臉清潔方法","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sat-skin-013","t":"3-2 保養品上臉｜塗抹順序、手法全掌握","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-skin-014","t":"3-3 深層清潔保養｜保護肌膚屏障的去角質方法","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-skin-015","t":"4-1 痘痘","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-skin-016","t":"4-2 毛孔（黑頭、白頭）","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-skin-017","t":"4-3 雀斑、曬斑、曬痕","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-skin-018","t":"4-4 乾燥與出油","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-skin-019","t":"4-5 皺紋、彈性缺乏","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-skin-020","t":"4-6 皮膚疣、扁平疣","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-skin-021","t":"4-7 黑眼圈、泛紅","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-skin-022","t":"5-1 美容儀｜在家就能使用的儀器與使用方法","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-skin-023","t":"5-2 醫美｜醫美與日常保養的結合、術後保養","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-skin-024","t":"6-1 臉以外的皮膚保養｜沐浴乳、洗髮乳選擇重點","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-skin-025","t":"6-2 常見皮膚問題｜毛孔角化症、胸痘與背痘","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-skin-026","t":"6-3 頭皮與頭髮保養","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-skin-027","t":"7-1 全身刮痧按摩","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"sat-skin-028","t":"7-2 全身淋巴按摩","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sat-skin-029","t":"7-3 飲食與皮膚的關鍵關聯","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-skin-030","t":"8-1 Outro","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-skin-031","t":"【示範影片】3-1 Minshua 洗臉法","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-skin-032","t":"【示範影片】3-1 早晨洗臉法","l":1,"d":0,"m":1,"r":1,"n":""},{"id":"sat-skin-033","t":"【示範影片】3-1 眼妝卸除方法","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-skin-034","t":"【示範影片】3-1 唇妝卸除方法","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-skin-035","t":"【示範影片】3-2 Minshua 輕拍黏貼保養法","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-skin-036","t":"【示範影片】3-2 Minshua 保養法","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-skin-037","t":"【跟練影片】4-7 改善黑眼圈的眼周按摩","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-skin-038","t":"【跟練影片】4-7 改善酒糟和皮膚泛紅的冥想法","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sat-skin-039","t":"【示範影片】7-1 拉提臉部","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-skin-040","t":"【示範影片】7-1 矯正臉部不對稱、修飾輪廓","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-skin-041","t":"【示範影片】7-1 修飾國字臉、顴骨突出","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sat-skin-042","t":"【跟練影片】7-2 淋巴按摩","l":1,"d":0,"m":11,"r":11,"n":""}]},{"id":"sat-yoga","name":"尼泊爾正宗瑜伽","site":"sat","url":"https://sat.cool/classroom/133","manual":true,"note":"知識衛星・Raj & Deepa・開啟七大脈輪・喚醒全身能量；平台顯示進度 3%（平台不給每支完成狀態，請自行勾選）","items":[{"id":"sat-yoga-001","t":"1-1 尼泊爾正宗瑜伽介紹","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-yoga-002","t":"1-2 瑜伽概論","l":1,"d":0,"m":33,"r":33,"n":""},{"id":"sat-yoga-003","t":"2-1 基礎瑜伽體式（上）（附中文配音）","l":1,"d":0,"m":50,"r":50,"n":""},{"id":"sat-yoga-004","t":"2-2 基礎瑜伽體式（下）（附中文配音）","l":1,"d":0,"m":48,"r":48,"n":""},{"id":"sat-yoga-005","t":"2-3 進階瑜伽體式（上）（附中文配音）","l":1,"d":0,"m":53,"r":53,"n":""},{"id":"sat-yoga-006","t":"2-4 進階瑜伽體式（下）（附中文配音）","l":1,"d":0,"m":47,"r":47,"n":""},{"id":"sat-yoga-007","t":"2-5 拜日式串連教學（附中文配音）","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-yoga-008","t":"2-6 拜月式串連教學（附中文配音）","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sat-yoga-009","t":"3-1 瑜伽前的準備","l":1,"d":0,"m":14,"r":14,"n":""},{"id":"sat-yoga-010","t":"3-2 脈輪概述","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-yoga-011","t":"3-3 海底輪（附中文配音）","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-yoga-012","t":"3-4 生殖輪（附中文配音）","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-yoga-013","t":"3-5 太陽神經叢（附中文配音）","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-yoga-014","t":"3-6 心輪（附中文配音）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-yoga-015","t":"3-7 喉輪（附中文配音）","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sat-yoga-016","t":"3-8 眉心輪（附中文配音）","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sat-yoga-017","t":"3-9 頂輪（附中文配音）","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-yoga-018","t":"4-1 呼吸法簡介 Pranayama（附中文配音）","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sat-yoga-019","t":"4-2 風箱呼吸法【2種】（附中文配音）","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sat-yoga-020","t":"4-3 頭顱發光呼吸法 Kapalbhati（附中文配音）","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-yoga-021","t":"4-4 鼻孔交替呼吸法【2種】（附中文配音）","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"sat-yoga-022","t":"4-5 涼爽呼吸法【2種】（附中文配音）","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sat-yoga-023","t":"4-6 海洋呼吸法 Ujjayi（附中文配音）","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-yoga-024","t":"4-7 蜂鳴呼吸法 Bhramari（附中文配音）","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sat-yoga-025","t":"4-8 嗡音吟唱 Udgeet（附中文配音）","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sat-yoga-026","t":"5-1 早晨清醒瑜伽（1小時）（附中文配音）","l":1,"d":0,"m":54,"r":54,"n":""},{"id":"sat-yoga-027","t":"5-2 早晨活力瑜伽（20分鐘）（附中文配音）","l":1,"d":0,"m":31,"r":31,"n":""},{"id":"sat-yoga-028","t":"5-3 下班晚間放鬆瑜伽（1小時）（附中文配音）","l":1,"d":0,"m":57,"r":57,"n":""},{"id":"sat-yoga-029","t":"5-4 下班晚間緩解痠痛瑜伽（20分鐘）（附中文配音）","l":1,"d":0,"m":24,"r":24,"n":""},{"id":"sat-yoga-030","t":"5-5 睡前助眠瑜伽（15分鐘）（附中文配音）","l":1,"d":0,"m":20,"r":20,"n":""},{"id":"sat-yoga-031","t":"5-6 增強性魅力的助性瑜伽（30分鐘）（附中文配音）","l":1,"d":0,"m":29,"r":29,"n":""},{"id":"sat-yoga-032","t":"5-7 增強免疫力的瑜珈（40分鐘）（附中文配音）","l":1,"d":0,"m":42,"r":42,"n":""},{"id":"sat-yoga-033","t":"5-8 脈輪淨化冥想（1小時）（附中文配音）","l":1,"d":0,"m":51,"r":51,"n":""}]},{"id":"sf-jp","name":"實用日文會話課（2025 全新）","site":"shifu","url":"https://shifu.tw/course/mylessons","manual":true,"note":"師父 ShiFu・千田愛紗・81 支影片，另附講義／練習冊／學習音檔等下載資源與 2026/2/9 直播（未列入）；平台不給每支完成狀態，請自行勾選","items":[{"id":"sf-jp-001","t":"0-0 初見師父","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sf-jp-002","t":"1-1 認識日文與五十音","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sf-jp-003","t":"1-2 「清音」發音規則與書寫方式","l":1,"d":0,"m":59,"r":59,"n":""},{"id":"sf-jp-004","t":"1-3 「濁音」與「半濁音」如何分辨？聲帶振動跟氣音","l":1,"d":0,"m":20,"r":20,"n":""},{"id":"sf-jp-005","t":"1-4 「拗音」的發音規則與書寫方式","l":1,"d":0,"m":29,"r":29,"n":""},{"id":"sf-jp-006","t":"1-5 「長音」的發音規則與書寫方式","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sf-jp-007","t":"1-6 「促音」的發音規則與書寫方式","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-jp-008","t":"1-7 「重音」如何判斷？初學者必學的音調","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sf-jp-009","t":"2-1 怎麼說「你我他、這那哪」？學會日文代名詞","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-jp-010","t":"2-2 怎麼說「是／不是」？最基本的日文句型『～は～です』","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sf-jp-011","t":"2-3 怎麼說最基本的「請問」？學會『ですか？』","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-jp-012","t":"2-4 怎麼說「有～嗎？」？學會『いますか？』與『ありますか？』","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-jp-013","t":"2-5 怎麼說「請、麻煩了」？學會最萬用的『お願いします』","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sf-jp-014","t":"2-6 怎麼說「請給我」？學會『をください』","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-jp-015","t":"2-7 怎麼說「從～到～」？學會『から』與『まで』","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-jp-016","t":"2-8 怎麼說「可以...嗎？」？學會『できますか？』與『～てもいいですか？』","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-jp-017","t":"2-9 怎麼說「可以請您...嗎」？學會『～ていただけますか？』","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-jp-018","t":"2-10 聽不懂怎麼辦？學會三句救援用語解尷尬！","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sf-jp-019","t":"3-1 怎麼做自我介紹更得體？搞懂自稱與問候語","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-jp-020","t":"3-2 禮貌怎麼說才自然？萬用敬語一次學會！","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-jp-021","t":"3-3 開場寒暄＋自然收尾，不再尷尬說再見","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sf-jp-022","t":"3-4 怎麼請對方幫忙處理事情？說得委婉有禮貌","l":1,"d":0,"m":38,"r":38,"n":""},{"id":"sf-jp-023","t":"3-5 怎麼表達送禮心意？適用長輩與職場情境","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-jp-024","t":"3-6 怎麼打電話不緊張？從接電話到結尾都學會！","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sf-jp-025","t":"4-1 怎麼預約餐廳？打電話＆現場都難不倒","l":1,"d":0,"m":44,"r":44,"n":""},{"id":"sf-jp-026","t":"4-2 點餐怎麼說才道地？從點主餐到加點都會講","l":1,"d":0,"m":41,"r":41,"n":""},{"id":"sf-jp-027","t":"4-3 吃燒肉怎麼說？會點肉、會追加才盡興","l":1,"d":0,"m":45,"r":45,"n":""},{"id":"sf-jp-028","t":"4-4 甜點店怎麼問推薦？吃貨最愛會話全收錄","l":1,"d":0,"m":43,"r":43,"n":""},{"id":"sf-jp-029","t":"4-5 居酒屋怎麼點酒？乾杯不出糗的說法","l":1,"d":0,"m":37,"r":37,"n":""},{"id":"sf-jp-030","t":"4-6 拉麵店怎麼點？麵條硬度、加料不怕不會講","l":1,"d":0,"m":31,"r":31,"n":""},{"id":"sf-jp-031","t":"4-7 壽司店怎麼點？從單點到轉盤都搞懂！","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"sf-jp-032","t":"4-8 壽喜燒怎麼點怎麼吃？鍋料點法、沾醬與禮儀全搞懂","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sf-jp-033","t":"4-9 咖啡廳怎麼點餐？內用外帶、甜點加購不卡詞","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sf-jp-034","t":"5-1 怎麼找商品？跟店員開口不再怕","l":1,"d":0,"m":50,"r":50,"n":""},{"id":"sf-jp-035","t":"5-2 怎麼結帳最順利？7大金句 x 5種回應","l":1,"d":0,"m":34,"r":34,"n":""},{"id":"sf-jp-036","t":"5-3 東西不合怎麼退換？用對句子店員不生氣","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sf-jp-037","t":"5-4 服飾店怎麼試穿？尺寸、風格、詢價都搞定","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sf-jp-038","t":"5-5 便利商店怎麼問服務？影印、繳費也會講","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-jp-039","t":"5-6 藥妝店怎麼問功能？對症下藥不怕錯","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"sf-jp-040","t":"5-7 買伴手禮怎麼問？禮盒、分量、保存都問得出來！","l":1,"d":0,"m":22,"r":22,"n":""},{"id":"sf-jp-041","t":"5-8 超市怎麼找商品？食材、特價、找收銀台一次學會","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sf-jp-042","t":"5-9 書店怎麼找書？分區詢問、推薦請教都會講","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-jp-043","t":"6-1 入住怎麼說？從報到到領鑰匙都學會","l":1,"d":0,"m":50,"r":50,"n":""},{"id":"sf-jp-044","t":"6-2 退房怎麼講？延後退房、寄放行李沒問題","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-jp-045","t":"6-3 東西掉了怎麼辦？用日文找回失物不慌張","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sf-jp-046","t":"6-4 飯店用語怎麼說？備品、設施、請求服務都搞懂","l":1,"d":0,"m":25,"r":25,"n":""},{"id":"sf-jp-047","t":"6-5 民宿怎麼溝通？與房東交流沒問題","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sf-jp-048","t":"6-6 長期住宿怎麼談？sharehouse 生活用語一次學會","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-jp-049","t":"7-1 怎麼問路？開場金句+指路關鍵字","l":1,"d":0,"m":35,"r":35,"n":""},{"id":"sf-jp-050","t":"7-2 機場通關一定要會的日文","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"sf-jp-051","t":"7-3 坐地鐵一定要會的日文","l":1,"d":0,"m":29,"r":29,"n":""},{"id":"sf-jp-052","t":"7-4 計程車一定要會的日文","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sf-jp-053","t":"7-5 包車一定要會的日文","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sf-jp-054","t":"7-6 自駕一定要會的日文","l":1,"d":0,"m":20,"r":20,"n":""},{"id":"sf-jp-055","t":"7-7 搭公車一定要會的日文","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sf-jp-056","t":"8-1 怎麼確認景點能不能拍照？","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-jp-057","t":"8-2 怎麼表達飲食過敏、行動不便等需求？","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sf-jp-058","t":"8-3 去神社一定要會的日文","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sf-jp-059","t":"8-4 去溫泉一定要會的日文","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sf-jp-060","t":"8-5 遊樂園一定要會的日文","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-jp-061","t":"8-6 博物館／美術館一定要會的日文","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sf-jp-062","t":"9-1 網購出錯怎麼辦？退貨、收不到貨、客服溝通全攻略","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sf-jp-063","t":"9-2 掉東西怎麼辦？","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-jp-064","t":"9-3 被搭訕或遇到騷擾怎麼辦？自保用語與求助句型","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-jp-065","t":"10-1 怎麼聊心情？","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sf-jp-066","t":"10-2 怎麼聊天氣？","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sf-jp-067","t":"10-3 怎麼聊休閒娛樂？","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-jp-068","t":"10-4 怎麼聊文化話題？","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-jp-069","t":"10-5 怎麼聊流行與時事？","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-jp-070","t":"10-6 怎麼讀空氣、不踩雷？","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sf-jp-071","t":"10-7 怎麼在聚餐場合不冷場？職場聚會必備寒暄日文","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sf-jp-072","t":"10-8 怎麼自然開啟話題？交友破冰實戰技巧","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-jp-073","t":"11-1 怎麼去醫院掛號、說明症狀？看病對話教學","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sf-jp-074","t":"11-2 哪裡不舒服怎麼說？身體部位＋症狀句型大集合","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-jp-075","t":"11-3 怎麼去藥局買藥？常見病痛＆藥品對話教學","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-jp-076","t":"12-1 怎麼辦手機門號、繳網路費？日本電信用語一次學會","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-jp-077","t":"12-2 怎麼寄包裹、收掛號？","l":1,"d":0,"m":9,"r":9,"n":""},{"id":"sf-jp-078","t":"12-3 怎麼用便利商店取件、繳費？","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-jp-079","t":"12-4 在日本洗衣店一定要會的日文","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-jp-080","t":"12-5 在日本剪頭髮一定要會的日文","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-jp-081","t":"13-1 學習語言之路","l":1,"d":0,"m":3,"r":3,"n":""}]},{"id":"sf-photo","name":"手機攝影課","site":"shifu","url":"https://shifu.tw/course/mylessons","manual":true,"note":"師父 ShiFu・Paddy 趙培均・57 支影片（平台顯示 29%，依你的指示全部當作沒看過）；平台不給每支完成狀態，請自行勾選","items":[{"id":"sf-photo-001","t":"0 初見師父","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sf-photo-002","t":"1-1 為什麼你拍的照片沒質感？","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-photo-003","t":"1-2 培養攝影眼的 4 個途徑","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-photo-004","t":"2-1 手機和相機的 4 個差別","l":1,"d":0,"m":5,"r":5,"n":""},{"id":"sf-photo-005","t":"2-2 拍照前，手機要先設定好的 5 件事","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-photo-006","t":"2-3 手機內建的鏡頭差在哪？","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-photo-007","t":"2-4 手機 7 種拍照模式要選哪個？","l":1,"d":0,"m":27,"r":27,"n":""},{"id":"sf-photo-008","t":"2-5 照片的儲存格式要怎麼選？","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-photo-009","t":"3-1 攝影必學的 5 大構圖法","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-photo-010","t":"3-2 構圖法的好隊友：畫面經營 4 大原則","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sf-photo-011","t":"3-3 提升照片層次的 3 大關鍵：前景、中景、後景","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-photo-012","t":"4-1 曝光 3 要素：快門、光圈、ISO","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-photo-013","t":"4-2 對焦與測光的使用場景","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-photo-014","t":"4-3 認識光源的 4 種方向：順光、側光、逆光、頂光","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-photo-015","t":"4-4 晴天、陰天、雨天、夜晚的不同拍法","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-photo-016","t":"5-1 三種用色技巧：對比、主調、情緒","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-photo-017","t":"5-2 光的不同顏色與情緒","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"sf-photo-018","t":"6-1 拍出決定性瞬間的唯一關鍵","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sf-photo-019","t":"7-1 樹林｜風景｜拍出落羽松的秋冬靜謐感","l":1,"d":0,"m":19,"r":19,"n":""},{"id":"sf-photo-020","t":"7-2 樹林｜人像｜用落羽松當景，拍出日系清新人像","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"sf-photo-021","t":"7-3 櫻花｜風景｜天氣不好，如何拍出櫻花的粉嫩感","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sf-photo-022","t":"7-4 櫻花｜人像｜人潮多，怎麼拍出繁盛感櫻花人像","l":1,"d":0,"m":8,"r":8,"n":""},{"id":"sf-photo-023","t":"7-5 海邊｜人像｜用濕沙倒影，拍出詩意氛圍感","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-photo-024","t":"8-1 孔廟｜建築｜拍出對稱美、對比美、復古美","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-photo-025","t":"8-2 孔廟｜人像｜融合古典氛圍，拍出靜謐人像","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sf-photo-026","t":"8-3 表藝｜建築｜拍出線條感與空間張力","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sf-photo-027","t":"8-4 表藝｜人像｜壓縮景深，拍出背景緊實層次","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sf-photo-028","t":"9-1 造景咖啡廳｜美食 & 人像｜善用場景風格，拍出主題感照片","l":1,"d":0,"m":20,"r":20,"n":""},{"id":"sf-photo-029","t":"9-2 窗光咖啡廳｜美食 & 人像｜善用自然光，拍出乾淨高質感畫面","l":1,"d":0,"m":18,"r":18,"n":""},{"id":"sf-photo-030","t":"9-3 火鍋｜美食 & 人像｜拍下互動瞬間，畫面更有溫度","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-photo-031","t":"10-1 遊樂園｜人像｜讓光線流動起來，拍出魔幻感構圖","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sf-photo-032","t":"10-2 美術館｜人像｜從背影到側臉，捕捉觀展的思緒感","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"sf-photo-033","t":"11-1 星空｜風景｜用手機也能拍出清晰月亮照","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sf-photo-034","t":"11-2 國館｜人像｜用自販機補光，拍出日系夜晚氛圍","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-photo-035","t":"11-3 公園｜建築｜用框架構圖，拍出有層次感的 101","l":1,"d":0,"m":14,"r":14,"n":""},{"id":"sf-photo-036","t":"11-4 公園｜人像｜結合人像與地景，讓 101 不只是背景","l":1,"d":0,"m":12,"r":12,"n":""},{"id":"sf-photo-037","t":"12-1 禮盒｜商攝｜背景＋小物＋燈光，拍出高質感開箱畫面","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"sf-photo-038","t":"13-1 星巴克｜人像｜善用窗光與木質調，拍出暖色系人像","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-photo-039","t":"13-2 車流｜光軌｜用長時間曝光，拍出流動的城市節奏","l":1,"d":0,"m":10,"r":10,"n":""},{"id":"sf-photo-040","t":"14-1 家常菜｜美食｜拍出溫度感的日常餐桌","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sf-photo-041","t":"14-2 夜市｜人像｜用小吃、遊戲、光影，拍出「台灣感性」","l":1,"d":0,"m":16,"r":16,"n":""},{"id":"sf-photo-042","t":"15-1 酒吧｜人像｜善用暗處與背光，拍出情緒感剪影照","l":1,"d":0,"m":15,"r":15,"n":""},{"id":"sf-photo-043","t":"15-2 慶生｜人像｜善用蠟燭光源與留白，拍出故事感畫面","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sf-photo-044","t":"15-3 仙女棒｜人像｜光線 × 線條 × 創意構圖的拍攝技巧","l":1,"d":0,"m":11,"r":11,"n":""},{"id":"sf-photo-045","t":"16-1 花束｜靜物｜留白構圖，拍出高級感與呼吸感","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-photo-046","t":"16-2 蛋糕｜食物｜從背景選擇到食材擺飾，拍出甜點的高級感","l":1,"d":0,"m":3,"r":3,"n":""},{"id":"sf-photo-047","t":"17-1 拍攝 APP 推薦與使用","l":1,"d":0,"m":14,"r":14,"n":""},{"id":"sf-photo-048","t":"17-2 調光、調色 APP 推薦與使用","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-photo-049","t":"17-3 排版 APP 推薦與使用","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-photo-050","t":"18-1 正確的編輯流程","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-photo-051","t":"18-2 Step 1 如何決定留哪張照片？","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-photo-052","t":"18-3 Step 2 調光與調色","l":1,"d":0,"m":22,"r":22,"n":""},{"id":"sf-photo-053","t":"18-4 Step 3 二次構圖","l":1,"d":0,"m":7,"r":7,"n":""},{"id":"sf-photo-054","t":"18-5 Step 4 排版","l":1,"d":0,"m":6,"r":6,"n":""},{"id":"sf-photo-055","t":"BONUS 1 聖誕樹｜人像｜拍出溫暖節慶感的人物合照","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-photo-056","t":"BONUS 2 燈海隧道｜人像｜善用散景光點，拍出迷人氛圍","l":1,"d":0,"m":4,"r":4,"n":""},{"id":"sf-photo-057","t":"BONUS 3 街邊燈樹｜人像｜沒水也能拍倒影！用 iPad 拍出質感大片","l":1,"d":0,"m":3,"r":3,"n":""}]},{"id":"lm-chat","name":"網聊｜脫單陪跑計劃","site":"lanceman","url":"https://lanceman.com.tw/classroom/%e6%96%b0%e7%ab%a0%e7%af%80-4-2/%e6%96%b0%e5%96%ae%e5%85%83-5/","manual":true,"note":"蘭斯曼形象學院・平台進度 35.6%・觀看期限永不過期；平台只給整門課總長（1091 分），每支時長以平均估算；完成狀態讀自平台","items":[{"id":"lm-chat-001","t":"課程筆記Notion使用方式","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-002","t":"課程簡介：關係推進地圖","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-003","t":"1-1 進入一段關係的本質","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-004","t":"1-2 女生喜歡/討厭的男生類型","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-005","t":"1-3 80%男生失敗的原因","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-006","t":"1-4 擺脫自我束縛並提升自信","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-007","t":"1-5 提升你的情感認知","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-008","t":"1-6 讓女生喜歡和你聊天、相處","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-009","t":"1-7 做好這個才不會被當好朋友","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-010","t":"1-8 遇到這些人請直接封鎖","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-011","t":"2-1 你適合哪個交友軟體？","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-012","t":"2-2 這些照片才能提高配對率","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-013","t":"2-3 必載自拍修圖App","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-014","t":"2-4 自介到底應該打什麼？","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-015","t":"2-5 各大交友軟體玩法&課金攻略","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-016","t":"完整形象改造計畫：改造案例","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-017","t":"3-1 網聊原則與禁忌","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-018","t":"3-2 廢物測試：女生說這些話我該怎麼回覆？","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-019","t":"3-3 關係溫度判斷","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-020","t":"3-4 如何開場來提高回覆率？","l":1,"d":1,"m":22,"r":0,"n":""},{"id":"lm-chat-021","t":"3-5 話題挑選：必中聊天話題","l":1,"d":1,"m":21,"r":0,"n":""},{"id":"lm-chat-022","t":"3-6 絕對不句點：話題無限的聊天架構","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-023","t":"3-7 透過聊天建立你的吸引力","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-024","t":"3-8 如何建立神秘感","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-025","t":"3-9 從交友軟體轉Line/Instagram","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-026","t":"3-10 快速讓女生卸下心防並套出你要的資訊","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-027","t":"3-11 一定要跟女生玩遊戲","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-028","t":"3-12 透過聊天創造出畫面感","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-029","t":"3-13 別再瞎聊了，透過話題引導達成你的目的","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-030","t":"3-14 用正確的鋪陳邀約第一次約會","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-031","t":"【補充單元】用預設劇本，開啟你的見聞色霸氣！","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-032","t":"4-1 第一次約會的目的","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-033","t":"4-2 約會注意事項","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-034","t":"4-3 第一次約會行程怎麼設計","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-035","t":"4-4 約會完做這件事更加分","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-036","t":"【網聊練習室】約會的「場景話題延伸法」以及現場互動吸引力公式！","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-037","t":"5-1 推進關係原則與不可犯的禁忌","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-038","t":"5-2 海王升溫神技：推拉技巧詳解","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-039","t":"5-3 朋友以及未來情人的關鍵差異","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-040","t":"5-4 關係溫度及訊號判斷","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-041","t":"5-5 聊這些話題創造曖昧氛圍","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-042","t":"5-6 性議題：破解防衛機制","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-043","t":"5-7 第二、三次約會如何肢體升溫？","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-044","t":"5-8 讓女生離不開你：引導投資","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-045","t":"6-1 確認關係前原則及禁忌＋導師故事分享","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-046","t":"6-2 讓女生對你上癮","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-047","t":"6-3 不告白該如何確認關係","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-048","t":"6-4 課程結語：這些是最重要的事","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-049","t":"【訪談】母單33年脫單心路歷程分享","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-050","t":"【訪談】身高163母單男，如何在交友軟體達成「一週一約會」","l":1,"d":0,"m":21,"r":21,"n":""},{"id":"lm-chat-051","t":"【訪談】39歲公務員，在結束4年感情後重新出發","l":1,"d":0,"m":21,"r":21,"n":""}]},{"id":"lm-perfume","name":"紳士基礎香水課","site":"lanceman","url":"https://lanceman.com.tw/classroom/8-12/","manual":true,"note":"蘭斯曼形象學院・平台進度 0%・觀看期限永不過期；平台只給整門課總長（181 分），每支時長以平均估算；完成狀態讀自平台","items":[{"id":"lm-perfume-001","t":"第一單元：香水歷史與演進","l":1,"d":0,"m":37,"r":37,"n":""},{"id":"lm-perfume-002","t":"第二單元：認識不同的香調與氣味","l":1,"d":0,"m":36,"r":36,"n":""},{"id":"lm-perfume-003","t":"第三單元：香水的種類與成分","l":1,"d":0,"m":36,"r":36,"n":""},{"id":"lm-perfume-004","t":"第四單元：選香實戰","l":1,"d":0,"m":36,"r":36,"n":""},{"id":"lm-perfume-005","t":"第五單元：如何用香水「穿」出你的魅力","l":1,"d":0,"m":36,"r":36,"n":""}]},{"id":"lm-skin","name":"男士基礎皮膚管理課","site":"lanceman","url":"https://lanceman.com.tw/classroom/8-11/","manual":true,"note":"蘭斯曼形象學院・平台進度 0%・觀看期限永不過期；平台只給整門課總長（51 分），每支時長以平均估算；完成狀態讀自平台","items":[{"id":"lm-skin-001","t":"1-1 為什麼男生一定要做皮膚管理","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"lm-skin-002","t":"1-2 讓皮膚老化、長痘、出遊的原因","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"lm-skin-003","t":"1-3 先判斷膚質再提升顏值","l":1,"d":0,"m":13,"r":13,"n":""},{"id":"lm-skin-004","t":"1-4 男性日常保養3步驟 & 保養品挑選指南","l":1,"d":0,"m":12,"r":12,"n":""}]},{"id":"lm-humor","name":"用喜劇邏輯提升你的兩性幽默表達力","site":"lanceman","url":"https://lanceman.com.tw/classroom/9-4/10-2/","manual":true,"note":"蘭斯曼形象學院・平台進度 11.8%・觀看期限永不過期；平台只給整門課總長（224 分），每支時長以平均估算；完成狀態讀自平台","items":[{"id":"lm-humor-001","t":"1-1 為什麼要有幽默感","l":1,"d":1,"m":18,"r":0,"n":""},{"id":"lm-humor-002","t":"2-1 發笑或開心的源頭：四大理論","l":1,"d":1,"m":18,"r":0,"n":""},{"id":"lm-humor-003","t":"2-2 幽默感表達的基本架構","l":1,"d":0,"m":18,"r":18,"n":""},{"id":"lm-humor-004","t":"2-3 三種幽默結構","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"lm-humor-005","t":"2-4 精修語句，讓句子更有趣","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"lm-humor-006","t":"2-5 善用修辭法，完成你的句子","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"lm-humor-007","t":"3-1 萬用公式","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"lm-humor-008","t":"3-2 大量練習","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"lm-humor-009","t":"4-1 課程結語","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"lm-humor-010","t":"補充單元：三種結構大量解析","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"lm-humor-011","t":"「誤導結構」大量案例解析","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"lm-humor-012","t":"「共鳴結構」大量案例解析","l":1,"d":0,"m":17,"r":17,"n":""},{"id":"lm-humor-013","t":"「觀察結構」大量案例解析","l":1,"d":0,"m":17,"r":17,"n":""}]},{"id":"wj-greenbean","name":"老式綠豆糕、花生糕、芝麻糕課","site":"wujiamake","url":"https://wujiamake.com/learning/greenbean","manual":true,"note":"吾家手作・Wilson 曾升揚（全素、無麩質）；平台進度 25%；另有電子食譜 PDF、學員社團、芝麻糕／花生糕純電子食譜（非影片，未列入）；平台不給每支完成狀態，請自行勾選","items":[{"id":"wj-greenbean-001","t":"老師與課程介紹","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"wj-greenbean-002","t":"老式綠豆糕製作教學","l":1,"d":0,"m":19,"r":19,"n":""}]},{"id":"wj-redbeans","name":"紅豆鬆糕線上課程","site":"wujiamake","url":"https://wujiamake.com/learning/redbeans","manual":true,"note":"吾家手作・Wilson 曾升揚（全素、無麩質）；平台進度 60%；另有電子食譜 PDF、補充與重點說明（2026.01.16 更新）、學員社團（非影片，未列入）；平台不給每支完成狀態，請自行勾選","items":[{"id":"wj-redbeans-001","t":"老師與課程介紹","l":1,"d":0,"m":2,"r":2,"n":""},{"id":"wj-redbeans-002","t":"紅豆鬆糕製作教學","l":1,"d":0,"m":22,"r":22,"n":""}]}]}/*END*/;
+
+// ================= 分頁 =================
+const TAB_KEY = 'courseHub.tab.v1';
+const tabs = document.querySelectorAll('.tabs button');
+function showTab(t){
+  tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === t)));
+  ['hub','sched','courses'].forEach(x => document.getElementById('tab-' + x).hidden = x !== t);
+  try { localStorage.setItem(TAB_KEY, t); } catch(e){}
+  renderPlan();
+}
+tabs.forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
+
+// ================= 資料 =================
+const PLAN_KEY = 'courseHub.plan.v1';
+const SCHED_KEY = 'courseHub.sched.v1';
+const SEED_KEY = 'courseHub.seed.v1';
+const WD = ['日','一','二','三','四','五','六'];
+const siteById = id => SITES.find(s => s.id === id) || { id, name:id, url:'#' };
+
+function loadJSON(k, fb){
+  try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? fb : v; } catch(e){ return fb; }
+}
+function saveJSON(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+
+let plan = loadJSON(PLAN_KEY, []); if (!Array.isArray(plan)) plan = [];
+let sched = loadJSON(SCHED_KEY, {});
+sched.template = sched.template || {}; // '週幾-row' → courseId
+sched.over = sched.over || {};         // 'YYYY-MM-DD#row' → courseId 或 ''（臨時調整）
+sched.log = sched.log || {};           // 'YYYY-MM-DD#row' → 那堂完成的量
+const savePlan = () => saveJSON(PLAN_KEY, plan);
+const saveSched = () => saveJSON(SCHED_KEY, sched);
+const courseById = id => plan.find(c => c.id === id);
+
+// 把同步資料併進來：新的整組加入；已有的以平台最新進度為準（保留你設的期限與課表）
+(function applySeed(){
+  if (!SEED || loadJSON(SEED_KEY, '') === SEED.v) return;
+  SEED.tracks.forEach(t => {
+    let c = courseById(t.id);
+    if (!c){
+      c = { id:t.id, type:'track', site:t.site || SEED.site, name:t.name, due:'', hist:{} };
+      plan.push(c);
+    }
+    // 你在這裡勾過的進度不會被平台快照蓋掉：每個單元取剩餘較少的那個
+    const old = {}; (c.items || []).forEach(x => old[x.id] = x);
+    c.type = 'track'; c.site = t.site || SEED.site; c.note = t.note; c.url = t.url || ''; c.manual = !!t.manual;
+    // 平台有標到期日、而你還沒自己設目標日 → 以到期日當期限
+    if (t.due && !c.due){
+      const d = new Date(); c.due = t.due; c.start = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      c.startDone = t.items.reduce((s,x) => s + x.m - x.r, 0);
+    }
+    c.items = t.items.map(x => { const o = old[x.id]; return (o && o.r < x.r) ? { ...x, r:o.r, d:o.r <= 0 ? x.l : Math.max(o.d, x.d) } : { ...x }; });
+    c.synced = SEED.v;
+  });
+  savePlan(); saveJSON(SEED_KEY, SEED.v);
+})();
+
+// ================= 日期工具（一律本地時間） =================
+const pad = n => String(n).padStart(2,'0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+const todayStr = () => ymd(new Date());
+const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); };
+const daysBetween = (a,b) => Math.round((parse(b) - parse(a)) / 86400000);
+const md = s => { const d = parse(s); const y = d.getFullYear() !== new Date().getFullYear() ? d.getFullYear() + '/' : ''; return `${y}${d.getMonth()+1}/${d.getDate()}（${WD[d.getDay()]}）`; };
+const mondayOf = s => { const d = parse(s); return addDays(s, -((d.getDay() + 6) % 7)); };
+const hhmm = t => t.replace(/^0/, '');
+const hm = m => { m = Math.round(m); const h = Math.floor(m/60), r = m % 60; return h ? (r ? `${h} 小時 ${r} 分` : `${h} 小時`) : `${r} 分`; };
+const isTrack = c => c.type === 'track';
+const qty = (c, n) => isTrack(c) ? hm(n) : `${n} 單元`;
+
+// 某天某時段實際排的課
+function slotCourse(date, row){
+  const dk = `${date}#${row}`;
+  const id = (dk in sched.over) ? sched.over[dk] : (sched.template[`${parse(date).getDay()}-${row}`] || '');
+  return id && courseById(id) ? id : '';
+}
+
+// 從今天(含)到目標日(含)，課表上排給這門課的堂數與分鐘
+function sessionsLeft(c, today){
+  if (!c.due) return null;
+  const n = daysBetween(today, c.due);
+  let count = 0, mins = 0;
+  for (let i = 0; i <= n; i++){
+    const d = addDays(today, i);
+    for (const r of AVAIL[parse(d).getDay()]) if (slotCourse(d, r) === c.id){ count++; mins += ROWS[r].min; }
+  }
+  return { count, mins };
+}
+const weeklySlots = c => Object.keys(sched.template).filter(k => sched.template[k] === c.id)
+  .sort((a,b) => SLOT_ORDER.indexOf(a) - SLOT_ORDER.indexOf(b));
+const slotLabel = k => { const [w,r] = k.split('-').map(Number); return WD[w] + ROWS[r].name.slice(0,1); };
+
+// 課程組的下一批單元：湊滿 minutes 分鐘為止
+function nextItems(c, minutes){
+  const out = []; let acc = 0;
+  for (const it of c.items){
+    if (it.r <= 0) continue;
+    out.push(it); acc += it.r;
+    if (acc >= minutes) break;
+  }
+  return out;
+}
+const itemUrl = (c, it) => c.url || `https://www.xuemi.co/programs/${it.id}/contents`;
+const courseUrl = c => {
+  if (isTrack(c)){ const n = c.items.find(x => x.r > 0); return n ? itemUrl(c, n) : siteById(c.site).url; }
+  return siteById(c.site).url;
+};
+
+function analyze(c){
+  const today = todayStr();
+  let total, done;
+  if (isTrack(c)){
+    total = Math.max(1, c.items.reduce((s,x) => s + x.m, 0));
+    done = total - c.items.reduce((s,x) => s + x.r, 0);
+  } else {
+    total = Math.max(1, c.total|0);
+    done = Math.min(total, Math.max(0, c.done|0));
+  }
+  const remain = total - done;
+  const doneToday = (c.hist && c.hist[today]) || 0;
+  const r = { total, done, remain, pct: Math.floor(done/total*100), doneToday, perSession: null };
+  if (isTrack(c)){
+    r.items = c.items.length;
+    r.itemsDone = c.items.filter(x => x.r <= 0).length;
+    r.lessons = c.items.reduce((s,x) => s + x.l, 0);
+    r.lessonsDone = c.items.reduce((s,x) => s + x.d, 0);
+  }
+
+  if (remain <= 0){ r.status = 'fin'; r.label = '已完成'; return r; }
+  if (!c.due){ r.status = 'free'; r.label = '未設期限'; return r; }
+
+  const left = daysBetween(today, c.due);
+  r.daysLeft = left;
+  if (left < 0){ r.status = 'over'; r.label = `逾期 ${-left} 天`; return r; }
+
+  // 從設定期限那天到目標日，線性分配；expected 是「到今天開始前」應完成的量
+  const start = c.start || today;
+  const span = Math.max(1, daysBetween(start, c.due));
+  const elapsed = Math.min(span, Math.max(0, daysBetween(start, today)));
+  const startDone = Math.min(total, c.startDone|0);
+  const expected = Math.floor(startDone + (total - startDone) * elapsed / span);
+  const late = done < expected;
+  r.status = late ? 'late' : 'ok';
+  r.label = late ? `落後 ${qty(c, expected - done)}` : '進度正常';
+
+  const s = sessionsLeft(c, today);
+  r.sessions = s.count; r.sessionMins = s.mins;
+  if (s.count > 0) r.perSession = Math.ceil((remain + doneToday) / s.count);
+  if (isTrack(c) && s.mins < remain && r.status === 'ok'){ r.status = 'late'; r.label = '排的時間不夠'; }
+  return r;
+}
+
+function el(tag, cls, text){
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
+}
+const color = c => `var(--${c.site})`;
+
+// 課程組：把下一個未完成單元標成上完
+function finishNext(c, slotKey){
+  const it = c.items.find(x => x.r > 0); if (!it) return;
+  setItemDone(c, it, true, slotKey);
+}
+function setItemDone(c, it, done, slotKey){
+  const t = todayStr();
+  c.hist = c.hist || {};
+  if (done){
+    const gained = it.r;
+    it.r = 0; it.d = it.l;
+    c.hist[t] = (c.hist[t] || 0) + gained;
+    if (slotKey){ sched.log[slotKey] = (sched.log[slotKey] || 0) + 1; saveSched(); }
+  } else {
+    it.r = it.m; it.d = 0;
+  }
+  savePlan(); renderPlan();
+}
+
+// ================= 今天 =================
+function renderToday(){
+  const box = document.getElementById('today');
+  box.replaceChildren();
+  const today = todayStr();
+  const wd = parse(today).getDay();
+  box.append(el('h2', null, `今天 · ${md(today)}`));
+
+  if (!plan.length){
+    box.append(el('div','empty','還沒有課程。先到「課程進度」新增課程，再回來把它排進下面的課表。'));
+    return;
+  }
+  const rows = AVAIL[wd].map(r => ({ r, id: slotCourse(today, r) })).filter(x => x.id);
+  if (!rows.length){
+    let next = null;
+    for (let i = 1; i <= 14 && !next; i++){
+      const d = addDays(today, i);
+      for (const r of AVAIL[parse(d).getDay()]){
+        const id = slotCourse(d, r);
+        if (id){ next = `下一堂：${md(d)}${ROWS[r].name} ${courseById(id).name}`; break; }
+      }
+    }
+    const open = AVAIL[wd].map(r => ROWS[r].name + ' ' + hhmm(ROWS[r].start) + '–' + hhmm(ROWS[r].end)).join('、');
+    box.append(el('div','empty', `今天沒排課（可上時段：${open}）。` + (next || '點下方課表的格子開始排課。')));
+    return;
+  }
+  rows.forEach(({r, id}) => {
+    const c = courseById(id), a = analyze(c);
+    const dk = `${today}#${r}`;
+    const got = sched.log[dk] || 0;
+    const row = el('div', 'trow');
+    const tm = el('div','tm'); tm.append(ROWS[r].name, document.createElement('br'), hhmm(ROWS[r].start));
+    const t = el('div','t', c.name); t.style.borderColor = color(c);
+    let sub;
+    if (a.status === 'fin') sub = '這組已上完，可改排別的課';
+    else if (isTrack(c)){
+      const its = nextItems(c, ROWS[r].min);
+      sub = '這堂上：' + its.map(x => `${x.t}（${hm(x.r)}）`).join('、');
+      if (got) sub = `已上完 ${got} 個單元 ✓　接著：` + its.map(x => x.t).join('、');
+    } else {
+      const goal = a.perSession || 1;
+      sub = `這堂 ${got}/${goal} 單元${got >= goal ? ' ✓' : ''}`;
+      if (got >= goal) row.classList.add('done');
+    }
+    if (a.status === 'late' || a.status === 'over') sub += ` · ${a.label}`;
+    t.append(el('small', null, sub));
+    const go = el('a','btn sm','前往'); go.href = courseUrl(c); go.target = '_blank'; go.rel = 'noopener';
+    const plus = el('button','btn sm pri', isTrack(c) ? '上完一單元' : '+1'); plus.type = 'button';
+    plus.disabled = a.status === 'fin';
+    plus.addEventListener('click', () => isTrack(c) ? finishNext(c, dk) : bump(c.id, 1, dk));
+    row.append(tm, t, go, plus);
+    box.append(row);
+  });
+}
+
+// ================= 週課表 =================
+let weekStart = mondayOf(todayStr());
+function renderWeek(){
+  const grid = document.getElementById('wk');
+  grid.replaceChildren();
+  const today = todayStr();
+  const end = addDays(weekStart, 6);
+  const ds = parse(weekStart), de = parse(end);
+  document.getElementById('wkRange').textContent =
+    `${ds.getMonth()+1}/${ds.getDate()} – ${de.getMonth()+1}/${de.getDate()}`;
+  document.getElementById('thisWk').disabled = weekStart === mondayOf(today);
+
+  grid.append(el('div'));
+  const dates = [...Array(7)].map((_, i) => addDays(weekStart, i));
+  dates.forEach(d => {
+    const h = el('div', 'hd' + (d === today ? ' now' : ''));
+    h.append(WD[parse(d).getDay()], el('b', null, String(parse(d).getDate())));
+    grid.append(h);
+  });
+
+  ROWS.forEach((R, r) => {
+    const rl = el('div','rl'); rl.append(R.name, document.createElement('br'), hhmm(R.start).replace(':00','') + '–' + hhmm(R.end).replace(':00',''));
+    grid.append(rl);
+    dates.forEach(d => {
+      const wd = parse(d).getDay();
+      if (!AVAIL[wd].includes(r)){ grid.append(el('div','cell na')); return; }
+      const dk = `${d}#${r}`;
+      const id = slotCourse(d, r);
+      const b = el('button','cell'); b.type = 'button';
+      if (d < today) b.classList.add('past');
+      if (d === today) b.classList.add('is-today');
+      if (id){
+        const c = courseById(id);
+        b.classList.add('has'); b.style.borderLeftColor = color(c);
+        b.append(el('span','cn', c.name.replace(/^學米/, '').replace(/（.*）$/, '')), el('span','pf', siteById(c.site).name));
+        b.setAttribute('aria-label', `${md(d)}${R.name} ${c.name}`);
+      } else {
+        b.classList.add('free'); b.append(el('span','plus','+'));
+        b.setAttribute('aria-label', `${md(d)}${R.name} 空堂`);
+      }
+      if (dk in sched.over) b.append(el('span','ov'));
+      if (sched.log[dk]) b.append(el('span','ck','✓'));
+      b.addEventListener('click', () => openSlot(d, r));
+      grid.append(b);
+    });
+  });
+}
+document.getElementById('prevWk').addEventListener('click', () => { weekStart = addDays(weekStart, -7); renderWeek(); });
+document.getElementById('nextWk').addEventListener('click', () => { weekStart = addDays(weekStart, 7); renderWeek(); });
+document.getElementById('thisWk').addEventListener('click', () => { weekStart = mondayOf(todayStr()); renderWeek(); });
+
+// ================= 課程清單 =================
+const openLists = new Set();
+function renderItems(c, box){
+  c.items.forEach(it => {
+    const row = el('div', 'it' + (it.r <= 0 ? ' done' : ''));
+    const cb = el('input'); cb.type = 'checkbox'; cb.checked = it.r <= 0;
+    cb.setAttribute('aria-label', it.t + ' 已上完');
+    cb.addEventListener('change', () => setItemDone(c, it, cb.checked));
+    const tx = el('div','itx', it.t);
+    const info = it.l === 1 ? (it.r <= 0 ? '已完成' : hm(it.m)) : it.r <= 0 ? `${it.l} 堂 · 已完成`
+      : (it.r < it.m ? `${it.l} 堂 · 剩 ${hm(it.r)}／${hm(it.m)}` : `${it.l} 堂 · ${hm(it.m)}`);
+    tx.append(el('small', null, info + (it.n && it.r > 0 && it.r < it.m ? ` · 接著：${it.n}` : '')));
+    const go = el('a','btn sm','開啟'); go.href = itemUrl(c, it); go.target = '_blank'; go.rel = 'noopener';
+    row.append(cb, tx, go);
+    box.append(row);
+  });
+}
+
+function renderList(){
+  const box = document.getElementById('plist');
+  box.replaceChildren();
+  const order = {over:0,late:1,ok:2,free:3,fin:4};
+  plan.map(c => ({ c, a: analyze(c) }))
+    .sort((x,y) => order[x.a.status] - order[y.a.status] || (x.c.due||'9999').localeCompare(y.c.due||'9999'))
+    .forEach(({c,a}) => {
+      const site = siteById(c.site);
+      const card = el('div','card');
+      const band = el('span','band'); band.style.background = color(c);
+      const bd = el('div','bd');
+      const top = el('div','top');
+      top.append(el('span','cn', c.name), el('span','pf', site.name), el('span', 'tag ' + a.status, a.label));
+      const bar = el('div','bar'); const fill = el('i');
+      fill.style.width = a.pct + '%'; fill.style.background = color(c); bar.append(fill);
+
+      const lines = [];
+      if (isTrack(c)){
+        lines.push(a.lessons === a.items ? `${a.itemsDone}/${a.items} 支影片（${a.pct}%）` : `${a.itemsDone}/${a.items} 個單元、${a.lessonsDone}/${a.lessons} 堂（${a.pct}%）`);
+        lines.push(`內容共 ${hm(a.total)}，還剩 ${hm(a.remain)}`);
+        if (c.note) lines.push(c.note);
+      } else {
+        lines.push(`${a.done} / ${a.total} 單元（${a.pct}%）`);
+      }
+      const ws = weeklySlots(c);
+      if (ws.length){
+        const wmin = ws.reduce((s,k) => s + ROWS[+k.split('-')[1]].min, 0);
+        let l = `每週 ${ws.length} 堂（${hm(wmin)}）：${ws.map(slotLabel).join('、')}`;
+        if (isTrack(c) && a.remain > 0) l += ` · 照這樣約 ${Math.ceil(a.remain / wmin)} 週上完`;
+        lines.push(l);
+      } else lines.push('還沒排進課表');
+      if (c.due && a.status !== 'fin'){
+        if (a.status === 'over') lines.push(`目標 ${md(c.due)} 已過，還剩 ${qty(c, a.remain)}`);
+        else {
+          lines.push(`目標 ${md(c.due)}，還有 ${a.daysLeft} 天`);
+          if (!a.sessions) lines.push('到期前課表沒排到這門，請排課');
+          else if (isTrack(c)) lines.push(`到期前排了 ${a.sessions} 堂（${hm(a.sessionMins)}），內容剩 ${hm(a.remain)}`);
+          else lines.push(`到期前排了 ${a.sessions} 堂，每堂約 ${a.perSession} 單元`);
+        }
+      }
+      if (c.synced) lines.push(c.manual ? `清單抄自平台：${c.synced.slice(0,10)}` : `進度同步自平台：${c.synced.slice(0,10)}`);
+      const meta = el('div','meta');
+      lines.forEach((l,i) => { if (i) meta.append(document.createElement('br')); meta.append(l); });
+
+      const acts = el('div','acts');
+      const go = el('a','btn sm','前往上課'); go.href = courseUrl(c); go.target = '_blank'; go.rel = 'noopener';
+      acts.append(go);
+      if (isTrack(c)){
+        const nx = el('button','btn sm pri','上完一單元'); nx.type = 'button'; nx.disabled = a.status === 'fin';
+        nx.addEventListener('click', () => finishNext(c));
+        const tg = el('button','btn sm', openLists.has(c.id) ? '收起清單' : `單元清單（${a.items}）`); tg.type = 'button';
+        tg.addEventListener('click', () => { openLists.has(c.id) ? openLists.delete(c.id) : openLists.add(c.id); renderList(); });
+        acts.append(nx, tg);
+      } else {
+        const minus = el('button','btn sm','−1'); minus.type = 'button';
+        minus.addEventListener('click', () => bump(c.id, -1));
+        const plus = el('button','btn sm pri','完成 +1'); plus.type = 'button';
+        plus.addEventListener('click', () => bump(c.id, 1));
+        acts.append(minus, plus);
+      }
+      const edit = el('button','btn sm','編輯'); edit.type = 'button';
+      edit.addEventListener('click', () => openDlg(c.id));
+      acts.append(edit);
+
+      bd.append(top, bar, meta, acts);
+      if (isTrack(c) && openLists.has(c.id)){
+        const lb = el('div','items'); renderItems(c, lb); bd.append(lb);
+      }
+      card.append(band, bd);
+      box.append(card);
+    });
+}
+
+function renderPlan(){ renderToday(); renderWeek(); renderList(); }
+
+// 手動課程：完成/退回單元；從某一堂按的會記在那一堂
+function bump(id, delta, slotKey){
+  const c = courseById(id); if (!c || isTrack(c)) return;
+  const total = Math.max(1, c.total|0);
+  const next = Math.min(total, Math.max(0, (c.done|0) + delta));
+  if (next === (c.done|0)) return;
+  c.done = next;
+  const t = todayStr();
+  c.hist = c.hist || {};
+  c.hist[t] = Math.max(0, (c.hist[t] || 0) + delta);
+  if (!c.hist[t]) delete c.hist[t];
+  if (slotKey){
+    sched.log[slotKey] = Math.max(0, (sched.log[slotKey] || 0) + delta);
+    if (!sched.log[slotKey]) delete sched.log[slotKey];
+    saveSched();
+  }
+  savePlan(); renderPlan();
+}
+
+const $ = id => document.getElementById(id);
+const openD = d => d.showModal ? d.showModal() : d.setAttribute('open','');
+const closeD = d => d.close ? d.close() : d.removeAttribute('open');
+
+// ================= 時段對話框 =================
+let slotCtx = null;
+function fillSlotInfo(){
+  const { date, row } = slotCtx;
+  const box = $('sInfo'); box.replaceChildren();
+  const id = slotCourse(date, row);
+  if (!id) return;
+  const c = courseById(id), a = analyze(c);
+  const dk = `${date}#${row}`;
+  const info = el('div','slotinfo');
+  info.append(el('b', null, c.name), document.createElement('br'),
+    `${siteById(c.site).name} · ${a.pct}% · ${a.label}`);
+  if (isTrack(c) && a.status !== 'fin'){
+    info.append(document.createElement('br'), '這堂建議：' + nextItems(c, ROWS[row].min).map(x => `${x.t}（${hm(x.r)}）`).join('、'));
+  }
+  if (sched.log[dk]) info.append(document.createElement('br'), `這堂完成了 ${sched.log[dk]} 個單元`);
+  const rowEl = el('div','row');
+  const go = el('a','btn sm','前往上課'); go.href = courseUrl(c); go.target = '_blank'; go.rel = 'noopener';
+  const plus = el('button','btn sm pri', isTrack(c) ? '上完一單元' : '這堂完成 +1'); plus.type = 'button';
+  plus.disabled = date > todayStr() || a.status === 'fin';
+  plus.addEventListener('click', () => { isTrack(c) ? finishNext(c, dk) : bump(c.id, 1, dk); fillSlotInfo(); });
+  rowEl.append(go, plus);
+  info.append(rowEl);
+  box.append(info);
+}
+function openSlot(date, row){
+  slotCtx = { date, row };
+  const wd = parse(date).getDay();
+  $('sTitle').textContent = `${md(date)} ${ROWS[row].name}`;
+  $('sSub').textContent = `${hhmm(ROWS[row].start)}–${hhmm(ROWS[row].end)}（${hm(ROWS[row].min)}）`;
+  const cur = slotCourse(date, row);
+  const sel = $('sCourse'); sel.replaceChildren();
+  const none = el('option', null, '（空堂）'); none.value = ''; sel.append(none);
+  plan.filter(c => analyze(c).status !== 'fin' || c.id === cur).forEach(c => {
+    const o = el('option', null, `${c.name}（${siteById(c.site).name}）`); o.value = c.id; sel.append(o);
+  });
+  sel.value = cur;
+  const overridden = `${date}#${row}` in sched.over;
+  document.querySelector(`input[name=sScope][value=${overridden ? 'once' : 'weekly'}]`).checked = true;
+  $('sHint').textContent = `每週固定：之後每個週${WD[wd]}${ROWS[row].name}都排這門（個別調整過的週次不受影響）。`;
+  fillSlotInfo();
+  openD($('sdlg'));
+}
+$('sCancel').addEventListener('click', () => closeD($('sdlg')));
+$('sform').addEventListener('submit', e => {
+  e.preventDefault();
+  const { date, row } = slotCtx;
+  const val = $('sCourse').value;
+  const dk = `${date}#${row}`, tk = `${parse(date).getDay()}-${row}`;
+  const scope = document.querySelector('input[name=sScope]:checked').value;
+  if (scope === 'weekly'){
+    if (val) sched.template[tk] = val; else delete sched.template[tk];
+    delete sched.over[dk];
+  } else {
+    if (val === (sched.template[tk] || '')) delete sched.over[dk]; else sched.over[dk] = val;
+  }
+  saveSched(); closeD($('sdlg')); renderPlan();
+});
+
+// ================= 自動排課 =================
+$('autoBtn').addEventListener('click', async () => {
+  const today = todayStr();
+  const list = plan.map(c => ({ c, a: analyze(c) })).filter(x => x.a.status !== 'fin');
+  if (!list.length){ uiAlert('沒有未完成的課程可排。先到「課程進度」新增課程。'); return; }
+  if (Object.keys(sched.template).length &&
+      !(await uiConfirm('會重排「每週固定」課表（只改這一次的調整不受影響）。繼續？'))) return;
+
+  // 每門課每週需要的時間：剩餘分鐘 ÷ 剩餘週數（沒設期限當 2 年，排在有期限的課後面）
+  list.forEach(x => {
+    const mins = isTrack(x.c) ? x.a.remain : x.a.remain * MIN_PER_UNIT;
+    const weeks = x.c.due ? Math.max(1, (daysBetween(today, x.c.due) + 1) / 7) : 104;
+    x.need = mins / weeks; x.mins = mins;
+  });
+  const order = {over:0,late:1,ok:2,free:3};
+  list.sort((p,q) => order[p.a.status] - order[q.a.status] || q.need - p.need);
+  const pick = list.slice(0, SLOT_ORDER.length);
+  const N = SLOT_ORDER.length, sum = pick.reduce((s,x) => s + x.need, 0);
+  pick.forEach(x => {
+    x.cap = Math.max(1, Math.ceil(x.mins / 120)); // 不必排超過內容所需的堂數
+    x.raw = N * x.need / sum; x.n = Math.min(x.cap, Math.max(1, Math.floor(x.raw)));
+  });
+  let used = pick.reduce((s,x) => s + x.n, 0);
+  while (used > N){ const m = pick.reduce((p,q) => q.n > p.n ? q : p); m.n--; used--; }
+  pick.slice().sort((p,q) => (q.raw - Math.floor(q.raw)) - (p.raw - Math.floor(p.raw)))
+    .forEach(x => { if (used < N && x.n < x.cap){ x.n++; used++; } });
+  // 還有空堂就依需求比例繼續補
+  while (used < N){
+    const c = pick.filter(x => x.n < x.cap).sort((p,q) => q.raw / (q.n||1) - p.raw / (p.n||1))[0];
+    if (!c) break; c.n++; used++;
+  }
+  const left = pick.map(x => ({ id: x.c.id, k: x.n }));
+  const seq = []; let prev = null;
+  for (let i = 0; i < used; i++){
+    const cand = left.filter(x => x.k > 0).sort((p,q) => q.k - p.k);
+    const ch = cand.find(x => x.id !== prev) || cand[0];
+    seq.push(ch.id); ch.k--; prev = ch.id;
+  }
+  sched.template = {};
+  seq.forEach((id, i) => sched.template[SLOT_ORDER[i]] = id);
+  saveSched(); renderPlan();
+});
+
+// ================= 課程編輯 =================
+const dlg = $('dlg');
+const fSite = $('fSite');
+SITES.forEach(s => { const o = el('option', null, s.name); o.value = s.id; fSite.append(o); });
+let editing = null;
+function openDlg(id){
+  editing = id || null;
+  const c = courseById(id) || { name:'', site:SITES[0].id, total:'', done:0, due:'' };
+  const tr = isTrack(c);
+  $('dlgTitle').textContent = id ? '編輯課程' : '新增課程';
+  $('fName').value = c.name; fSite.value = c.site;
+  $('fTotal').value = c.total || ''; $('fDone').value = c.done || 0;
+  $('fDue').value = c.due || '';
+  $('fSiteBox').hidden = tr; $('fNumBox').hidden = tr;
+  $('dlgSub').textContent = tr ? '這組課的單元和進度由平台同步，這裡只改名稱和目標日。' : '新增後到「課表」把它排進時段。';
+  $('delBtn').hidden = !id;
+  openD(dlg);
+}
+$('addBtn').addEventListener('click', () => openDlg(null));
+$('cancelBtn').addEventListener('click', () => closeD(dlg));
+$('delBtn').addEventListener('click', async () => {
+  const c = courseById(editing);
+  if (!c || !(await uiConfirm(`刪除「${c.name}」？課表上排的這門課也會清掉。`))) return;
+  plan = plan.filter(x => x.id !== editing);
+  for (const k in sched.template) if (sched.template[k] === editing) delete sched.template[k];
+  for (const k in sched.over) if (sched.over[k] === editing) delete sched.over[k];
+  savePlan(); saveSched(); closeD(dlg); renderPlan();
+});
+$('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('fName').value.trim();
+  const due = $('fDue').value || '';
+  let c = courseById(editing);
+  if (c && isTrack(c)){
+    if (!name){ uiAlert('請填名稱'); return; }
+    const a = analyze(c);
+    if (!c.start || c.due !== due){ c.start = todayStr(); c.startDone = a.done; }
+    c.name = name; c.due = due;
+    savePlan(); closeD(dlg); renderPlan(); return;
+  }
+  const total = parseInt($('fTotal').value, 10);
+  if (!name || !(total > 0)){ uiAlert('請填課程名稱和總單元數'); return; }
+  const done = Math.min(total, Math.max(0, parseInt($('fDone').value, 10) || 0));
+  if (!c){ c = { id: 'c' + Date.now().toString(36), hist:{} }; plan.push(c); }
+  if (!c.start || c.due !== due){ c.start = todayStr(); c.startDone = done; } // 期限變了就從今天重新起算
+  Object.assign(c, { name, site: fSite.value, total, done, due });
+  delete c.days; // 舊版欄位
+  savePlan(); closeD(dlg); renderPlan();
+});
+
+// ================= 備份 / 還原 =================
+$('exportBtn').addEventListener('click', () => {
+  const data = { app:'courseHub', v:3, exported: new Date().toISOString(), notes: loadNotes(), plan, sched, seed: loadJSON(SEED_KEY, '') };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `課程備份-${todayStr()}.json`;
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+$('importBtn').addEventListener('click', () => $('importFile').click());
+$('importFile').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = '';
+  if (!f) return;
+  try {
+    const data = JSON.parse(await f.text());
+    if (data.app !== 'courseHub' || !Array.isArray(data.plan)) throw 0;
+    if (!(await uiConfirm(`用這份備份（${data.plan.length} 門課）覆蓋目前的課表、課程和備註？`))) return;
+    saveJSON(PLAN_KEY, data.plan);
+    saveJSON(SCHED_KEY, data.sched || {});
+    if (data.seed) saveJSON(SEED_KEY, data.seed);
+    saveNotes(data.notes || {});
+    location.reload();
+  } catch(err){ uiAlert('這不是課程備份檔'); }
+});
+
+// 從背景切回來（可能跨過午夜）時重算
+document.addEventListener('visibilitychange', () => { if (!document.hidden) renderPlan(); });
+
+let startTab = 'hub';
+try { startTab = localStorage.getItem(TAB_KEY) || 'hub'; } catch(e){}
+if (startTab === 'plan') startTab = 'sched';
+showTab(['hub','sched','courses'].includes(startTab) ? startTab : 'hub');
 </script>
 
 </body>
